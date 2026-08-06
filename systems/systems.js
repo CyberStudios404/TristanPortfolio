@@ -1,6 +1,6 @@
 
 <script>
-const portfolioBase = "https://sites.google.com/view/tristanbernier/frameworks/";
+const portfolioBase = `${window.location.origin}/main/frameworks/`;
 
 const systems = {
   bootstrap: {
