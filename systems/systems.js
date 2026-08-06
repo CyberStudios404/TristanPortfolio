@@ -1,6 +1,5 @@
-
 <script>
-const portfolioBase = `${window.location.origin}/main/frameworks/`;
+const portfolioBase = "/main/frameworks/";
 
 const systems = {
   bootstrap: {
@@ -160,36 +159,37 @@ const systems = {
 };
 
 const chains = {
-  bootstrap: { nodes: ["bootstrap","services"] },
-  services: { nodes: ["bootstrap","services","assets","eventbus","audio"] },
-  assets: { nodes: ["bootstrap","services","assets","terrain","worldstate","world"] },
-  eventbus: { nodes: ["bootstrap","services","eventbus","ai","combat","quest","cinematics","audio","worldstate","world"] },
-  audio: { nodes: ["bootstrap","services","eventbus","audio","weather","cinematics","worldstate","world"] },
-  weather: { nodes: ["bootstrap","services","audio","weather","worldstate","world"] },
-  ai: { nodes: ["bootstrap","services","eventbus","ai","worldstate","world"] },
-  terrain: { nodes: ["bootstrap","services","assets","terrain","worldstate","world"] },
-  movement: { nodes: ["bootstrap","services","movement","worldstate","world"] },
-  combat: { nodes: ["bootstrap","services","eventbus","ai","movement","combat","worldstate","world"] },
-  quest: { nodes: ["bootstrap","services","eventbus","quest","worldstate","world"] },
-  cinematics: { nodes: ["bootstrap","services","eventbus","audio","cinematics","worldstate","world"] },
-  worldstate: { nodes: ["weather","ai","terrain","movement","combat","quest","cinematics","worldstate","world"] },
-  world: { nodes: ["worldstate","world"] }
+  bootstrap: { nodes: ["bootstrap", "services"] },
+  services: { nodes: ["bootstrap", "services", "assets", "eventbus", "audio"] },
+  assets: { nodes: ["bootstrap", "services", "assets", "terrain", "worldstate", "world"] },
+  eventbus: { nodes: ["bootstrap", "services", "eventbus", "ai", "combat", "quest", "cinematics", "audio", "worldstate", "world"] },
+  audio: { nodes: ["bootstrap", "services", "eventbus", "audio", "weather", "cinematics", "worldstate", "world"] },
+  weather: { nodes: ["bootstrap", "services", "audio", "weather", "worldstate", "world"] },
+  ai: { nodes: ["bootstrap", "services", "eventbus", "ai", "worldstate", "world"] },
+  terrain: { nodes: ["bootstrap", "services", "assets", "terrain", "worldstate", "world"] },
+  movement: { nodes: ["bootstrap", "services", "movement", "worldstate", "world"] },
+  combat: { nodes: ["bootstrap", "services", "eventbus", "ai", "movement", "combat", "worldstate", "world"] },
+  quest: { nodes: ["bootstrap", "services", "eventbus", "quest", "worldstate", "world"] },
+  cinematics: { nodes: ["bootstrap", "services", "eventbus", "audio", "cinematics", "worldstate", "world"] },
+  worldstate: { nodes: ["weather", "ai", "terrain", "movement", "combat", "quest", "cinematics", "worldstate", "world"] },
+  world: { nodes: ["worldstate", "world"] }
 };
 
 const topology = [
-  ["bootstrap","services"],
-  ["services","assets"], ["services","eventbus"], ["services","audio"],
-  ["assets","terrain"],
-  ["eventbus","ai"], ["eventbus","combat"], ["eventbus","quest"], ["eventbus","cinematics"], ["eventbus","audio"],
-  ["audio","weather"], ["audio","cinematics"],
-  ["services","weather"], ["services","ai"], ["services","terrain"],
-  ["services","movement"], ["services","combat"], ["services","quest"], ["services","cinematics"],
-  ["weather","worldstate"], ["ai","worldstate"], ["terrain","worldstate"],
-  ["movement","worldstate"], ["combat","worldstate"], ["quest","worldstate"], ["cinematics","worldstate"],
-  ["worldstate","world"]
+  ["bootstrap", "services"],
+  ["services", "assets"], ["services", "eventbus"], ["services", "audio"],
+  ["assets", "terrain"],
+  ["eventbus", "ai"], ["eventbus", "combat"], ["eventbus", "quest"], ["eventbus", "cinematics"], ["eventbus", "audio"],
+  ["audio", "weather"], ["audio", "cinematics"],
+  ["services", "weather"], ["services", "ai"], ["services", "terrain"],
+  ["services", "movement"], ["services", "combat"], ["services", "quest"], ["services", "cinematics"],
+  ["weather", "worldstate"], ["ai", "worldstate"], ["terrain", "worldstate"],
+  ["movement", "worldstate"], ["combat", "worldstate"], ["quest", "worldstate"], ["cinematics", "worldstate"],
+  ["worldstate", "world"]
 ];
 
 let pinned = null;
+
 const map = document.getElementById("map");
 const svg = document.getElementById("svg");
 const inspector = document.getElementById("inspector");
@@ -199,30 +199,48 @@ const nodeMap = Object.fromEntries(nodes.map(n => [n.dataset.system, n]));
 function relCenter(el) {
   const m = map.getBoundingClientRect();
   const r = el.getBoundingClientRect();
-  return { x: r.left - m.left + r.width / 2, y: r.top - m.top + r.height / 2 };
+  return {
+    x: r.left - m.left + r.width / 2,
+    y: r.top - m.top + r.height / 2
+  };
 }
 
 function rebuildLines() {
+  if (!map || !svg) return;
+
   svg.innerHTML = "";
+
   topology.forEach(([from, to], i) => {
-    const a = nodeMap[from], b = nodeMap[to];
+    const a = nodeMap[from];
+    const b = nodeMap[to];
     if (!a || !b) return;
-    const p1 = relCenter(a), p2 = relCenter(b);
+
+    const p1 = relCenter(a);
+    const p2 = relCenter(b);
+
     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    line.setAttribute("x1", p1.x); line.setAttribute("y1", p1.y);
-    line.setAttribute("x2", p2.x); line.setAttribute("y2", p2.y);
+    line.setAttribute("x1", p1.x);
+    line.setAttribute("y1", p1.y);
+    line.setAttribute("x2", p2.x);
+    line.setAttribute("y2", p2.y);
     line.setAttribute("pathLength", "100");
     line.classList.add("connection");
-    line.dataset.from = from; line.dataset.to = to;
+    line.dataset.from = from;
+    line.dataset.to = to;
     line.id = "line-" + i;
     svg.appendChild(line);
+
     const dep = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    dep.setAttribute("x1", p1.x); dep.setAttribute("y1", p1.y);
-    dep.setAttribute("x2", p2.x); dep.setAttribute("y2", p2.y);
+    dep.setAttribute("x1", p1.x);
+    dep.setAttribute("y1", p1.y);
+    dep.setAttribute("x2", p2.x);
+    dep.setAttribute("y2", p2.y);
     dep.classList.add("dep");
-    dep.dataset.from = from; dep.dataset.to = to;
+    dep.dataset.from = from;
+    dep.dataset.to = to;
     svg.appendChild(dep);
   });
+
   requestAnimationFrame(() => {
     svg.querySelectorAll(".connection").forEach(l => l.classList.add("drawn"));
     setTimeout(() => svg.querySelectorAll(".connection").forEach(l => l.classList.add("flowing")), 700);
@@ -232,90 +250,117 @@ function rebuildLines() {
 function renderInspector(id) {
   const d = systems[id];
   if (!d) return;
-  document.getElementById("title").textContent = d.title;
-  document.getElementById("insp-status").innerHTML = `<span class="dot dot-${d.status}"></span>${d.statusLabel}`;
-  document.getElementById("description").textContent = d.role;
 
+  const titleEl = document.getElementById("title");
+  const statusEl = document.getElementById("insp-status");
+  const descriptionEl = document.getElementById("description");
   const depsEl = document.getElementById("deps");
   const depsSec = document.getElementById("deps-section");
-  depsEl.innerHTML = "";
-  if (!d.dependencies.length) {
-    depsSec.style.display = "none";
-  } else {
-    depsSec.style.display = "";
-    d.dependencies.forEach(t => {
-      const el = document.createElement("div");
-      el.className = "tag";
-      el.textContent = t;
-      depsEl.appendChild(el);
-    });
-  }
-
   const usedEl = document.getElementById("usedby");
   const usedSec = document.getElementById("usedby-section");
-  usedEl.innerHTML = "";
-  if (!d.usedBy || !d.usedBy.length) {
-    usedSec.style.display = "none";
-  } else {
-    usedSec.style.display = "";
-    d.usedBy.forEach(t => {
+  const tags = document.getElementById("tags");
+  const road = document.getElementById("roadmap");
+  const btn = document.getElementById("open-btn");
+
+  if (titleEl) titleEl.textContent = d.title;
+  if (statusEl) statusEl.innerHTML = `<span class="dot dot-${d.status}"></span>${d.statusLabel}`;
+  if (descriptionEl) descriptionEl.textContent = d.role;
+
+  if (depsEl && depsSec) {
+    depsEl.innerHTML = "";
+    if (!d.dependencies.length) {
+      depsSec.style.display = "none";
+    } else {
+      depsSec.style.display = "";
+      d.dependencies.forEach(t => {
+        const el = document.createElement("div");
+        el.className = "tag";
+        el.textContent = t;
+        depsEl.appendChild(el);
+      });
+    }
+  }
+
+  if (usedEl && usedSec) {
+    usedEl.innerHTML = "";
+    if (!d.usedBy || !d.usedBy.length) {
+      usedSec.style.display = "none";
+    } else {
+      usedSec.style.display = "";
+      d.usedBy.forEach(t => {
+        const el = document.createElement("div");
+        el.className = "tag";
+        el.textContent = t;
+        usedEl.appendChild(el);
+      });
+    }
+  }
+
+  if (tags) {
+    tags.innerHTML = "";
+    d.technologies.forEach(t => {
       const el = document.createElement("div");
       el.className = "tag";
       el.textContent = t;
-      usedEl.appendChild(el);
+      tags.appendChild(el);
     });
   }
 
-  const tags = document.getElementById("tags");
-  tags.innerHTML = "";
-  d.technologies.forEach(t => {
-    const el = document.createElement("div");
-    el.className = "tag";
-    el.textContent = t;
-    tags.appendChild(el);
-  });
-
-  const road = document.getElementById("roadmap");
-  road.innerHTML = "";
-  d.roadmap.forEach(r => {
-    const li = document.createElement("li");
-    li.textContent = r;
-    road.appendChild(li);
-  });
-
-  const btn = document.getElementById("open-btn");
-  const frameworkURL = d.framework ? portfolioBase + d.framework : null;
-  if (frameworkURL) {
-    btn.disabled = false;
-    btn.textContent = "OPEN FRAMEWORK →";
-    btn.onclick = () => window.open(frameworkURL);
-  } else {
-    btn.disabled = true;
-    btn.textContent = "PAGE COMING SOON";
-    btn.onclick = null;
+  if (road) {
+    road.innerHTML = "";
+    d.roadmap.forEach(r => {
+      const li = document.createElement("li");
+      li.textContent = r;
+      road.appendChild(li);
+    });
   }
-  inspector.classList.add("active");
+
+  if (btn) {
+    const frameworkURL = d.framework ? `${portfolioBase}${d.framework}/` : null;
+    if (frameworkURL) {
+      btn.disabled = false;
+      btn.textContent = "OPEN FRAMEWORK →";
+      btn.onclick = () => {
+        window.location.href = frameworkURL;
+      };
+    } else {
+      btn.disabled = true;
+      btn.textContent = "PAGE COMING SOON";
+      btn.onclick = null;
+    }
+  }
+
+  if (inspector) inspector.classList.add("active");
 }
 
 function hideInspector() {
   if (pinned) return;
-  inspector.classList.remove("active");
+  if (inspector) inspector.classList.remove("active");
 }
 
 function applyHighlight(id) {
   const chain = chains[id];
   if (!chain) return;
+
   const set = new Set(chain.nodes);
+
   nodes.forEach(n => {
     const sid = n.dataset.system;
-    if (set.has(sid)) { n.classList.add("highlight"); n.classList.remove("dim"); }
-    else { n.classList.add("dim"); n.classList.remove("highlight"); }
+    if (set.has(sid)) {
+      n.classList.add("highlight");
+      n.classList.remove("dim");
+    } else {
+      n.classList.add("dim");
+      n.classList.remove("highlight");
+    }
   });
+
   svg.querySelectorAll(".connection").forEach(l => {
     const keep = set.has(l.dataset.from) && set.has(l.dataset.to);
     l.classList.toggle("highlight", keep);
     l.classList.toggle("dim", !keep);
   });
+
   svg.querySelectorAll(".dep").forEach(l => {
     const keep = set.has(l.dataset.from) && set.has(l.dataset.to);
     l.classList.toggle("active", keep);
@@ -329,16 +374,23 @@ function clearHighlight() {
 }
 
 function panTo(node) {
-  if (!node) { map.style.transform = ""; return; }
+  if (!map) return;
+
+  if (!node) {
+    map.style.transform = "";
+    return;
+  }
+
   const m = map.getBoundingClientRect();
   const r = node.getBoundingClientRect();
   const dx = (r.left + r.width / 2 - (m.left + m.width / 2)) * 0.025;
   const dy = (r.top + r.height / 2 - (m.top + m.height / 2)) * 0.025;
-  map.style.transform = `scale(1.012) translate(${-dx}px,${-dy}px)`;
+  map.style.transform = `scale(1.012) translate(${-dx}px, ${-dy}px)`;
 }
 
 nodes.forEach(node => {
   const id = node.dataset.system;
+
   node.addEventListener("mouseenter", () => {
     if (pinned) return;
     node.classList.add("previewing");
@@ -346,6 +398,7 @@ nodes.forEach(node => {
     applyHighlight(id);
     panTo(node);
   });
+
   node.addEventListener("mouseleave", () => {
     node.classList.remove("previewing");
     if (pinned) return;
@@ -353,6 +406,7 @@ nodes.forEach(node => {
     clearHighlight();
     panTo(null);
   });
+
   node.addEventListener("click", e => {
     e.stopPropagation();
     nodes.forEach(n => n.classList.remove("pinned"));
@@ -362,8 +416,12 @@ nodes.forEach(node => {
     applyHighlight(id);
     panTo(node);
   });
+
   node.addEventListener("keydown", e => {
-    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); node.click(); }
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      node.click();
+    }
   });
 });
 
@@ -377,6 +435,7 @@ document.addEventListener("click", e => {
 });
 
 window.addEventListener("load", rebuildLines);
+
 window.addEventListener("resize", () => {
   rebuildLines();
   if (pinned) applyHighlight(pinned);
