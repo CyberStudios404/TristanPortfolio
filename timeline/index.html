@@ -1,1 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ashes Timeline Prototype</title>
+  <link rel="stylesheet" href="timeline.css" />
+  <script src="timeline.js" defer></script>
+</head>
+<body>
+  <div class="scene" aria-hidden="true">
+    <div class="scene__bg" id="sceneBg"></div>
+    <div class="scene__mid" id="sceneMid"></div>
+    <div class="scene__fog" id="sceneFog"></div>
+    <div class="scene__vignette"></div>
+  </div>
 
+  <canvas id="ashCanvas"></canvas>
+
+  <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Open controls" aria-expanded="false">☰</button>
+  <div class="mobile-drawer-backdrop" id="mobileBackdrop" aria-hidden="true"></div>
+
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="kicker">Ashes / Development Log</div>
+        <h1>Timeline</h1>
+        <p>Cinematic archive with layered scenes and filters.</p>
+      </div>
+
+      <div class="hint">
+        Drag the main area to scroll. Click a card to expand it. Use the tags, search, and year controls to narrow the archive.
+      </div>
+
+      <div class="sidebar-panel">
+        <h3>Active Year</h3>
+        <div class="year-stats" id="activeYearStats">
+          <strong>2026</strong>
+          <div>Loading timeline data...</div>
+        </div>
+        <div class="mini-bars" id="activeYearBars"></div>
+      </div>
+
+      <div class="sidebar-panel">
+        <h3>Minimap</h3>
+        <div class="minimap" id="minimap"></div>
+      </div>
+
+      <div class="sidebar-panel year-nav-shell">
+        <h3>Years</h3>
+        <div class="years" id="yearNav"></div>
+      </div>
+    </aside>
+
+    <main class="main" id="scrollArea" aria-label="Development timeline">
+      <section class="hero">
+        <div class="hero-row">
+          <div>
+            <h2>Systems history, cinematic and searchable.</h2>
+            <p>
+              Explore the progress of Ashes of the Fallen, throughout the years.
+            </p>
+          </div>
+          <div class="chip ghost" id="matchCounter"><span class="dot"></span> all milestones visible</div>
+        </div>
+        <div class="chip-row" id="categoryChips"></div>
+      </section>
+
+      <section class="controls">
+        <div class="control-bar">
+          <input id="searchBox" class="search" type="search" placeholder="Search milestones, notes, dependencies..." />
+          <button class="action-btn" id="toggleProgress">Progress mode</button>
+          <button class="action-btn" id="expandAll">Expand all</button>
+          <button class="action-btn" id="collapseAll">Collapse all</button>
+        </div>
+      </section>
+
+      <section class="timeline-wrap" id="timeline"></section>
+      <div class="footer-space"></div>
+    </main>
+  </div>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lightbox-inner">
+      <div class="lightbox-image" id="lightboxImage"></div>
+      <div class="lightbox-bar">
+        <div class="lightbox-caption" id="lightboxCaption"></div>
+        <button class="lightbox-close" id="lightboxClose">Close</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
