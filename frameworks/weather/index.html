@@ -1,1 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weather Framework</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="weather-framework.css" />
+  <script src="weather-framework.js" defer></script>
+</head>
+<body>
+  <div class="wrapper">
+    <section class="hero">
+      <img
+        id="heroImage"
+        src="https://assetstorev1-prd-cdn.unity3d.com/key-image/0b180055-c17d-4700-adeb-f96e028baeca.png"
+        alt="Weather background"
+      >
 
+      <div class="hero-content">
+        <a href="/main/systems/" class="button-link">Back to Systems</a>
+
+        <div class="label">ENVIRONMENT SYSTEMS</div>
+
+        <h1>Dynamic Weather Framework</h1>
+
+        <p class="description" id="weatherDescription">
+          A data-driven environmental system designed for scalable,
+          modular weather simulation in Unity.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">CURRENT WEATHER</div>
+
+        <div class="state" id="weatherState">Storm</div>
+
+        <div class="info" id="weatherInfo">
+          Intensity: Heavy<br>
+          Wind: 42 km/h<br>
+          Particles: Active<br>
+          Audio: Dynamic
+        </div>
+
+        <div class="weather-switcher" id="weatherSwitcher">
+          <button class="weather-btn active" data-weather="storm">Storm</button>
+          <button class="weather-btn" data-weather="clear">Clear</button>
+          <button class="weather-btn" data-weather="snow">Snow</button>
+          <button class="weather-btn" data-weather="fog">Fog</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-image">
+      <img
+        class="section-bg"
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtDLQJPkchfjAEcEIATJmO5sUJBkB4p0YcemCom1B9wnulPWVedLwWgNI&s=10"
+        alt="Architecture background"
+      >
+
+      <div class="section-content">
+        <div class="heading">SYSTEM ARCHITECTURE</div>
+
+        <h2>Designed To Scale</h2>
+
+        <p class="text">
+          The weather framework separates data, logic and presentation.
+          Weather profiles define possibilities while services and controllers
+          handle runtime behaviour.
+        </p>
+
+        <div class="nodes">
+          <div class="node">Bootstrap</div>
+          <div class="arrow">↓</div>
+          <div class="node">Weather Service</div>
+          <div class="arrow">↓</div>
+          <div class="node">Weather Profiles</div>
+          <div class="arrow">↓</div>
+          <div class="node">Weather Controller</div>
+          <div class="arrow">↓</div>
+          <div class="node">HDRP Visual Layer</div>
+        </div>
+
+        <div class="heading" style="margin-top:120px">FEATURES</div>
+
+        <div class="features">
+          <div class="feature">
+            <h3>Biome Integration</h3>
+            <p>Different environments register their own weather possibilities.</p>
+          </div>
+
+          <div class="feature">
+            <h3>Gameplay Overrides</h3>
+            <p>Quests and events can force specific weather states.</p>
+          </div>
+
+          <div class="feature">
+            <h3>Audio System</h3>
+            <p>Weather controls ambience, loops and environmental effects.</p>
+          </div>
+
+          <div class="feature">
+            <h3>Particles</h3>
+            <p>Rain, snow and atmospheric effects are data driven.</p>
+          </div>
+        </div>
+
+        <div class="heading" style="margin-top:120px">IMPLEMENTATION</div>
+
+        <div class="tags">
+          <div class="tag">Unity HDRP</div>
+          <div class="tag">Scriptable Objects</div>
+          <div class="tag">Data Driven</div>
+          <div class="tag">Async Ready</div>
+          <div class="tag">Registry Compatible</div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
