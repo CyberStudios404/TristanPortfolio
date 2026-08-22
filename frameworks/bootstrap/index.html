@@ -1,1 +1,3960 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bootstrap Architecture | Tristan Bernier</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+/* =========================================================
+   RESET / VARIABLES
+========================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --bg:#050505;
+    --panel:rgba(255,255,255,.055);
+    --panel-strong:rgba(255,255,255,.085);
+    --border:rgba(255,255,255,.14);
+    --border-bright:rgba(255,255,255,.23);
+    --text:#fff;
+    --muted:#aaa;
+    --dim:#777;
+    --line:rgba(255,255,255,.11);
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Manrope",sans-serif;
+    overflow-x:hidden;
+    line-height:1.5;
+}
+
+a{
+    color:inherit;
+}
+
+button{
+    font:inherit;
+}
+
+.container{
+    width:min(1180px, calc(100% - 10vw));
+    margin:0 auto;
+}
+
+.section{
+    position:relative;
+    padding:120px 0;
+    border-top:1px solid rgba(255,255,255,.045);
+}
+
+.section-label{
+    font-size:11px;
+    letter-spacing:5px;
+    color:#858585;
+    text-transform:uppercase;
+}
+
+.section-title{
+    margin-top:18px;
+    font-size:clamp(42px,5vw,68px);
+    line-height:1.03;
+    letter-spacing:-3px;
+    font-weight:700;
+}
+
+.section-description{
+    max-width:820px;
+    margin-top:24px;
+    color:#aaa;
+    font-size:18px;
+    line-height:1.85;
+}
+
+.glass{
+    background:var(--panel);
+    border:1px solid var(--border);
+    backdrop-filter:blur(22px);
+    -webkit-backdrop-filter:blur(22px);
+    box-shadow:
+        0 15px 60px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.025);
+}
+
+.muted{
+    color:var(--muted);
+}
+
+.dim{
+    color:var(--dim);
+}
+
+.mono{
+    font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        monospace;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+    min-height:720px;
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    align-items:flex-end;
+}
+
+.hero-image{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    filter:brightness(.78) contrast(1.08);
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        radial-gradient(
+            circle at 72% 22%,
+            rgba(255,255,255,.08),
+            transparent 28%
+        ),
+        linear-gradient(
+            180deg,
+            rgba(0,0,0,.15),
+            rgba(0,0,0,.42) 42%,
+            rgba(5,5,5,.94) 100%
+        );
+    z-index:1;
+}
+
+.hero::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,0,0,.58),
+            transparent 62%
+        );
+    z-index:1;
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
+    width:min(1180px, calc(100% - 10vw));
+    margin:0 auto;
+    padding-bottom:85px;
+}
+
+.back-button{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 21px;
+    margin-bottom:34px;
+    border-radius:999px;
+    background:rgba(255,255,255,.075);
+    border:1px solid rgba(255,255,255,.22);
+    backdrop-filter:blur(15px);
+    color:#ddd;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:1px;
+    transition:.3s ease;
+}
+
+.back-button::before{
+    content:"←";
+    font-size:18px;
+}
+
+.back-button:hover{
+    transform:translateX(-4px);
+    background:rgba(255,255,255,.12);
+}
+
+.hero-label{
+    font-size:11px;
+    letter-spacing:6px;
+    color:#aaa;
+    text-transform:uppercase;
+}
+
+.hero-title{
+    margin-top:16px;
+    max-width:850px;
+    font-size:clamp(52px,7vw,92px);
+    line-height:.97;
+    font-weight:700;
+    letter-spacing:-4px;
+    text-transform:uppercase;
+}
+
+.hero-description{
+    max-width:790px;
+    margin-top:26px;
+    font-size:20px;
+    color:#d0d0d0;
+    line-height:1.72;
+}
+
+.hero-meta{
+    margin-top:38px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.meta-pill{
+    padding:10px 15px;
+    border:1px solid rgba(255,255,255,.13);
+    border-radius:999px;
+    background:rgba(255,255,255,.045);
+    color:#bcbcbc;
+    font-size:12px;
+}
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status-card{
+    position:absolute;
+    z-index:3;
+    right:6vw;
+    bottom:82px;
+    width:315px;
+    padding:28px;
+    border-radius:23px;
+    background:rgba(255,255,255,.075);
+    border:1px solid rgba(255,255,255,.22);
+    backdrop-filter:blur(24px);
+    box-shadow:0 25px 70px rgba(0,0,0,.3);
+}
+
+.status-label{
+    color:#919191;
+    font-size:10px;
+    letter-spacing:4px;
+}
+
+.status-title{
+    margin-top:10px;
+    font-size:30px;
+    font-weight:700;
+    letter-spacing:-1px;
+}
+
+.status-grid{
+    margin-top:22px;
+    display:grid;
+    gap:13px;
+}
+
+.status-row{
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+    font-size:12px;
+}
+
+.status-key{
+    color:#777;
+}
+
+.status-value{
+    color:#d9d9d9;
+    text-align:right;
+}
+
+.status-dot{
+    display:inline-block;
+    width:7px;
+    height:7px;
+    margin-right:7px;
+    border-radius:50%;
+    background:#cfcfcf;
+}
+
+/* =========================================================
+   30 SECOND OVERVIEW
+========================================================= */
+
+.quick-overview{
+    margin-top:-45px;
+    position:relative;
+    z-index:5;
+}
+
+.quick-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:0;
+    border-radius:25px;
+    overflow:hidden;
+}
+
+.quick-main{
+    padding:32px;
+}
+
+.quick-side{
+    padding:32px;
+    border-left:1px solid rgba(255,255,255,.08);
+}
+
+.quick-title{
+    font-size:10px;
+    letter-spacing:4px;
+    color:#777;
+    text-transform:uppercase;
+}
+
+.quick-main h2{
+    margin-top:13px;
+    font-size:30px;
+    line-height:1.25;
+    letter-spacing:-1px;
+}
+
+.quick-main p{
+    margin-top:15px;
+    max-width:650px;
+    color:#999;
+    line-height:1.75;
+    font-size:14px;
+}
+
+.quick-facts{
+    display:grid;
+    gap:12px;
+}
+
+.quick-fact{
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+    padding-bottom:12px;
+    border-bottom:1px solid rgba(255,255,255,.07);
+    font-size:12px;
+}
+
+.quick-fact:last-child{
+    border-bottom:0;
+}
+
+.quick-fact span:first-child{
+    color:#666;
+}
+
+.quick-fact span:last-child{
+    color:#bbb;
+    text-align:right;
+}
+
+/* =========================================================
+   ENGINEERING BRIEF
+========================================================= */
+
+.brief-grid{
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+    gap:70px;
+    align-items:start;
+}
+
+.problem-card{
+    margin-top:40px;
+    padding:34px;
+    border-radius:24px;
+    position:relative;
+    overflow:hidden;
+}
+
+.problem-card::after{
+    content:"";
+    position:absolute;
+    width:300px;
+    height:300px;
+    right:-140px;
+    top:-150px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.06);
+}
+
+.card-kicker{
+    font-size:10px;
+    letter-spacing:4px;
+    color:#777;
+    text-transform:uppercase;
+}
+
+.problem-card h3{
+    margin-top:16px;
+    font-size:28px;
+    letter-spacing:-1px;
+}
+
+.problem-card p{
+    margin-top:18px;
+    color:#a8a8a8;
+    line-height:1.85;
+}
+
+.metrics-panel{
+    display:grid;
+    gap:12px;
+}
+
+.metric{
+    padding:20px 22px;
+    border-radius:18px;
+}
+
+.metric-label{
+    font-size:10px;
+    color:#777;
+    letter-spacing:3px;
+    text-transform:uppercase;
+}
+
+.metric-value{
+    margin-top:7px;
+    color:#ddd;
+    font-size:17px;
+}
+
+/* =========================================================
+   CONSTRAINTS
+========================================================= */
+
+.constraint-grid{
+    margin-top:45px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+}
+
+.constraint{
+    padding:22px;
+    border-radius:18px;
+}
+
+.constraint-label{
+    font-size:9px;
+    color:#707070;
+    letter-spacing:3px;
+    text-transform:uppercase;
+}
+
+.constraint-value{
+    margin-top:10px;
+    color:#c4c4c4;
+    font-size:13px;
+    line-height:1.6;
+}
+
+/* =========================================================
+   BEFORE / AFTER
+========================================================= */
+
+.before-after{
+    margin-top:60px;
+    display:grid;
+    grid-template-columns:1fr 90px 1fr;
+    gap:22px;
+    align-items:center;
+}
+
+.arch-card{
+    min-height:360px;
+    padding:30px;
+    border-radius:24px;
+}
+
+.arch-card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+}
+
+.arch-card-title{
+    font-size:24px;
+    font-weight:700;
+}
+
+.arch-card-badge{
+    padding:7px 10px;
+    border-radius:999px;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.1);
+    color:#858585;
+    font-size:10px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+}
+
+.arch-content{
+    margin-top:28px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    align-items:center;
+}
+
+.stack-node{
+    width:100%;
+    padding:17px;
+    border-radius:16px;
+    background:rgba(255,255,255,.045);
+    border:1px solid rgba(255,255,255,.09);
+    text-align:center;
+    color:#ccc;
+    font-size:13px;
+}
+
+.stack-arrow{
+    color:#666;
+    font-size:18px;
+}
+
+.before-note{
+    margin-top:20px;
+    color:#757575;
+    font-size:11px;
+    line-height:1.65;
+}
+
+.middle-arrow{
+    text-align:center;
+    color:#666;
+    font-size:32px;
+}
+
+/* =========================================================
+   ARCHITECTURE
+========================================================= */
+
+.architecture-wrap{
+    margin-top:70px;
+    padding:30px;
+    border-radius:30px;
+    position:relative;
+    overflow:hidden;
+}
+
+.architecture-topbar{
+    position:relative;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    padding-bottom:20px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.architecture-topbar span{
+    color:#7a7a7a;
+    font-size:10px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+}
+
+.architecture-topbar strong{
+    color:#cfcfcf;
+    font-size:12px;
+}
+
+.architecture-canvas{
+    position:relative;
+    z-index:2;
+    padding:60px 20px 25px;
+    display:flex;
+    justify-content:center;
+}
+
+.architecture-column{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:16px;
+    width:100%;
+}
+
+.arch-node{
+    position:relative;
+    width:min(390px,100%);
+    padding:20px 22px;
+    border-radius:18px;
+    background:rgba(255,255,255,.045);
+    border:1px solid rgba(255,255,255,.1);
+    transition:.3s ease;
+}
+
+.arch-node:hover{
+    transform:translateY(-3px);
+    background:rgba(255,255,255,.075);
+    border-color:rgba(255,255,255,.24);
+}
+
+.arch-node.clickable{
+    cursor:pointer;
+}
+
+.arch-node.main{
+    background:rgba(255,255,255,.09);
+    border-color:rgba(255,255,255,.24);
+}
+
+.arch-node-label{
+    font-size:9px;
+    letter-spacing:3px;
+    color:#737373;
+    text-transform:uppercase;
+}
+
+.arch-node-title{
+    margin-top:6px;
+    font-size:18px;
+    font-weight:700;
+}
+
+.arch-node-description{
+    margin-top:7px;
+    color:#8d8d8d;
+    font-size:11px;
+    line-height:1.55;
+}
+
+.arch-subgraph{
+    width:min(760px,100%);
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+}
+
+.arch-subgraph .arch-node{
+    width:100%;
+}
+
+.arch-connector{
+    width:1px;
+    height:30px;
+    background:linear-gradient(
+        to bottom,
+        rgba(255,255,255,.28),
+        rgba(255,255,255,.05)
+    );
+}
+
+.arch-description{
+    padding:24px 0 0;
+    border-top:1px solid rgba(255,255,255,.08);
+    color:#878787;
+    font-size:12px;
+    line-height:1.8;
+}
+
+/* =========================================================
+   SYSTEM POSITION
+========================================================= */
+
+.position-grid{
+    margin-top:55px;
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+    gap:22px;
+}
+
+.position-map{
+    min-height:390px;
+    padding:30px;
+    border-radius:25px;
+}
+
+.position-center{
+    width:230px;
+    margin:70px auto 35px;
+    padding:18px;
+    text-align:center;
+    border-radius:16px;
+    background:rgba(255,255,255,.09);
+    border:1px solid rgba(255,255,255,.22);
+    font-size:15px;
+    font-weight:700;
+}
+
+.position-grid-lines{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.position-node{
+    padding:16px;
+    text-align:center;
+    border-radius:14px;
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.08);
+    color:#999;
+    font-size:12px;
+}
+
+.position-facts{
+    display:grid;
+    gap:12px;
+}
+
+.position-fact{
+    padding:23px;
+    border-radius:20px;
+}
+
+.position-fact-label{
+    color:#666;
+    font-size:9px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+}
+
+.position-fact-value{
+    margin-top:9px;
+    color:#c0c0c0;
+    font-size:14px;
+}
+
+/* =========================================================
+   DESIGN GOALS
+========================================================= */
+
+.goal-grid{
+    margin-top:60px;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+}
+
+.goal{
+    min-height:200px;
+    padding:29px;
+    border-radius:22px;
+    transition:.3s ease;
+}
+
+.goal:hover{
+    transform:translateY(-4px);
+    background:rgba(255,255,255,.075);
+}
+
+.goal-number{
+    color:#5f5f5f;
+    font-size:11px;
+    letter-spacing:3px;
+}
+
+.goal h3{
+    margin-top:18px;
+    font-size:22px;
+}
+
+.goal p{
+    margin-top:13px;
+    color:#919191;
+    line-height:1.7;
+    font-size:14px;
+}
+
+/* =========================================================
+   WHY / WHY NOT
+========================================================= */
+
+.why-grid{
+    margin-top:60px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.why-card{
+    padding:27px;
+    border-radius:22px;
+}
+
+.why-label{
+    color:#666;
+    font-size:9px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+}
+
+.why-card h3{
+    margin-top:13px;
+    font-size:20px;
+}
+
+.why-card p{
+    margin-top:10px;
+    color:#8d8d8d;
+    font-size:13px;
+    line-height:1.75;
+}
+
+/* =========================================================
+   STARTUP SEQUENCE
+========================================================= */
+
+.timeline{
+    margin-top:65px;
+    position:relative;
+}
+
+.timeline-line{
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:19px;
+    width:1px;
+    background:linear-gradient(
+        to bottom,
+        rgba(255,255,255,.18),
+        rgba(255,255,255,.035)
+    );
+}
+
+.timeline-item{
+    position:relative;
+    padding-left:70px;
+    padding-bottom:45px;
+}
+
+.timeline-marker{
+    position:absolute;
+    left:10px;
+    top:4px;
+    width:19px;
+    height:19px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.24);
+    background:#050505;
+}
+
+.timeline-item:last-child{
+    padding-bottom:0;
+}
+
+.timeline-step{
+    color:#666;
+    font-size:10px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+}
+
+.timeline-item h3{
+    margin-top:8px;
+    font-size:23px;
+}
+
+.timeline-item p{
+    margin-top:10px;
+    max-width:720px;
+    color:#909090;
+    line-height:1.75;
+    font-size:14px;
+}
+
+.parallel-grid{
+    margin-top:65px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.path-card{
+    padding:29px;
+    border-radius:22px;
+}
+
+.path-label{
+    font-size:10px;
+    letter-spacing:3px;
+    color:#727272;
+    text-transform:uppercase;
+}
+
+.path-card h3{
+    margin-top:13px;
+    font-size:22px;
+}
+
+.path-list{
+    margin-top:20px;
+    display:grid;
+    gap:10px;
+}
+
+.path-item{
+    padding:13px 15px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,.08);
+    background:rgba(255,255,255,.035);
+    color:#999;
+    font-size:12px;
+}
+
+/* =========================================================
+   ENGINEERING DECISIONS
+========================================================= */
+
+.decision-table{
+    margin-top:60px;
+    overflow:hidden;
+    border-radius:24px;
+}
+
+.table-row{
+    display:grid;
+    grid-template-columns:1.1fr 1.1fr 1.5fr;
+    border-bottom:1px solid rgba(255,255,255,.07);
+}
+
+.table-row:last-child{
+    border-bottom:0;
+}
+
+.table-row > div{
+    padding:20px 22px;
+    border-right:1px solid rgba(255,255,255,.07);
+}
+
+.table-row > div:last-child{
+    border-right:0;
+}
+
+.table-head{
+    background:rgba(255,255,255,.04);
+}
+
+.table-head > div{
+    color:#666;
+    font-size:10px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+}
+
+.table-row:not(.table-head) > div{
+    color:#a2a2a2;
+    font-size:13px;
+    line-height:1.65;
+}
+
+.tradeoff{
+    margin-top:35px;
+    padding:28px 30px;
+    border-radius:22px;
+}
+
+.tradeoff h3{
+    font-size:20px;
+}
+
+.tradeoff p{
+    margin-top:12px;
+    color:#999;
+    line-height:1.8;
+    font-size:14px;
+}
+
+/* =========================================================
+   IMPLEMENTATION
+========================================================= */
+
+.code-grid{
+    margin-top:60px;
+    display:grid;
+    gap:28px;
+}
+
+.code-card{
+    overflow:hidden;
+    border-radius:24px;
+}
+
+.code-header{
+    padding:16px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.code-title{
+    font-size:12px;
+    color:#cfcfcf;
+}
+
+.code-type{
+    color:#696969;
+    font-size:10px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+}
+
+pre{
+    padding:26px;
+    margin:0;
+    overflow-x:auto;
+    color:#bdbdbd;
+    background:rgba(0,0,0,.23);
+    font-size:12px;
+    line-height:1.85;
+}
+
+.code-description{
+    padding:22px 24px 25px;
+    color:#858585;
+    font-size:13px;
+    line-height:1.75;
+    border-top:1px solid rgba(255,255,255,.07);
+}
+
+/* =========================================================
+   FAILURE
+========================================================= */
+
+.failure-layout{
+    margin-top:60px;
+    display:grid;
+    grid-template-columns:1fr .8fr;
+    gap:30px;
+}
+
+.failure-flow{
+    padding:30px;
+    border-radius:24px;
+}
+
+.failure-stack{
+    margin-top:10px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:11px;
+}
+
+.failure-node{
+    width:100%;
+    padding:16px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.08);
+    background:rgba(255,255,255,.035);
+    color:#a9a9a9;
+    font-size:13px;
+    text-align:center;
+}
+
+.failure-arrow{
+    color:#555;
+}
+
+.failure-outcomes{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:11px;
+    width:100%;
+}
+
+.failure-outcome{
+    padding:16px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.08);
+    background:rgba(255,255,255,.035);
+    text-align:center;
+    color:#999;
+    font-size:12px;
+}
+
+.failure-notes{
+    display:grid;
+    gap:14px;
+}
+
+.failure-note{
+    padding:24px;
+    border-radius:20px;
+}
+
+.failure-note h3{
+    font-size:17px;
+}
+
+.failure-note p{
+    margin-top:9px;
+    color:#888;
+    line-height:1.7;
+    font-size:13px;
+}
+
+/* =========================================================
+   PERFORMANCE
+========================================================= */
+
+.performance-grid{
+    margin-top:60px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+}
+
+.performance-card{
+    padding:24px;
+    border-radius:20px;
+}
+
+.performance-label{
+    color:#707070;
+    font-size:9px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+}
+
+.performance-value{
+    margin-top:13px;
+    font-size:19px;
+    font-weight:700;
+}
+
+.performance-note{
+    margin-top:9px;
+    color:#777;
+    font-size:11px;
+    line-height:1.6;
+}
+
+.performance-warning{
+    margin-top:35px;
+    padding:22px 25px;
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,.1);
+    background:rgba(255,255,255,.03);
+    color:#7f7f7f;
+    font-size:12px;
+    line-height:1.75;
+}
+
+/* =========================================================
+   DEVELOPMENT
+========================================================= */
+
+.evolution{
+    margin-top:60px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+}
+
+.evolution-card{
+    padding:28px;
+    border-radius:22px;
+}
+
+.evolution-step{
+    color:#666;
+    font-size:10px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+}
+
+.evolution-card h3{
+    margin-top:14px;
+    font-size:20px;
+}
+
+.evolution-card p{
+    margin-top:12px;
+    color:#888;
+    font-size:13px;
+    line-height:1.75;
+}
+
+.evolution-line{
+    margin-top:40px;
+    height:1px;
+    background:rgba(255,255,255,.09);
+}
+
+/* =========================================================
+   MATURITY
+========================================================= */
+
+.maturity-grid{
+    margin-top:55px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+}
+
+.maturity-card{
+    padding:24px;
+    border-radius:20px;
+}
+
+.maturity-label{
+    color:#686868;
+    font-size:9px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+}
+
+.maturity-value{
+    margin-top:12px;
+    color:#c0c0c0;
+    font-size:14px;
+}
+
+.maturity-bar{
+    height:3px;
+    margin-top:16px;
+    border-radius:5px;
+    background:rgba(255,255,255,.07);
+    overflow:hidden;
+}
+
+.maturity-fill{
+    height:100%;
+    background:rgba(255,255,255,.55);
+}
+
+/* =========================================================
+   CURRENT STATE
+========================================================= */
+
+.state-layout{
+    margin-top:60px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
+}
+
+.state-panel{
+    padding:29px;
+    border-radius:24px;
+}
+
+.state-title{
+    color:#bbb;
+    font-size:14px;
+    letter-spacing:1px;
+}
+
+.state-list{
+    margin-top:20px;
+    display:grid;
+    gap:10px;
+}
+
+.state-item{
+    display:flex;
+    gap:12px;
+    color:#8e8e8e;
+    font-size:13px;
+    line-height:1.65;
+}
+
+.state-symbol{
+    width:18px;
+    flex:0 0 18px;
+    color:#999;
+}
+
+.state-symbol.done::before{
+    content:"✓";
+}
+
+.state-symbol.progress::before{
+    content:"◐";
+}
+
+.state-symbol.future::before{
+    content:"○";
+}
+
+/* =========================================================
+   MEDIA PLACEHOLDERS
+========================================================= */
+
+.media-grid{
+    margin-top:55px;
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+    gap:18px;
+}
+
+.media-placeholder{
+    position:relative;
+    min-height:330px;
+    border-radius:24px;
+    overflow:hidden;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.045),
+            rgba(255,255,255,.015)
+        );
+    border:1px dashed rgba(255,255,255,.18);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:35px;
+}
+
+.media-placeholder.small{
+    min-height:156px;
+}
+
+.media-placeholder::before{
+    content:"";
+    position:absolute;
+    inset:18px;
+    border:1px solid rgba(255,255,255,.045);
+    border-radius:17px;
+}
+
+.media-placeholder-content{
+    position:relative;
+    z-index:2;
+    max-width:450px;
+}
+
+.media-icon{
+    margin-bottom:14px;
+    color:#666;
+    font-size:24px;
+}
+
+.media-placeholder h3{
+    font-size:19px;
+}
+
+.media-placeholder p{
+    margin-top:10px;
+    color:#777;
+    font-size:12px;
+    line-height:1.7;
+}
+
+.media-label{
+    display:inline-block;
+    margin-top:15px;
+    padding:7px 10px;
+    border-radius:999px;
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.08);
+    color:#777;
+    font-size:9px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+}
+
+.media-side{
+    display:grid;
+    gap:18px;
+}
+
+/* =========================================================
+   EVIDENCE
+========================================================= */
+
+.evidence-grid{
+    margin-top:55px;
+    display:grid;
+    grid-template-columns:1.25fr .75fr;
+    gap:18px;
+}
+
+.evidence-card{
+    padding:27px;
+    border-radius:24px;
+}
+
+.evidence-card h3{
+    font-size:20px;
+}
+
+.evidence-card p{
+    margin-top:10px;
+    color:#828282;
+    font-size:12px;
+    line-height:1.7;
+}
+
+.evidence-link{
+    display:inline-flex;
+    margin-top:22px;
+    color:#c2c2c2;
+    text-decoration:none;
+    font-size:12px;
+}
+
+.evidence-link::after{
+    content:"↗";
+    margin-left:8px;
+    color:#666;
+}
+
+.evidence-side{
+    display:grid;
+    gap:18px;
+}
+
+/* =========================================================
+   FINAL SUMMARY
+========================================================= */
+
+.final-summary{
+    padding-bottom:160px;
+}
+
+.final-box{
+    margin-top:55px;
+    padding:42px;
+    border-radius:28px;
+    position:relative;
+    overflow:hidden;
+}
+
+.final-box::before{
+    content:"";
+    position:absolute;
+    width:400px;
+    height:400px;
+    right:-180px;
+    bottom:-250px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.07);
+}
+
+.final-box h3{
+    max-width:760px;
+    font-size:clamp(26px,3vw,40px);
+    line-height:1.3;
+    letter-spacing:-1px;
+}
+
+.final-box p{
+    max-width:820px;
+    margin-top:20px;
+    color:#909090;
+    line-height:1.9;
+    font-size:15px;
+}
+
+.final-actions{
+    margin-top:30px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+}
+
+.action{
+    display:inline-flex;
+    align-items:center;
+    padding:12px 18px;
+    border-radius:999px;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.14);
+    color:#c7c7c7;
+    text-decoration:none;
+    font-size:12px;
+    transition:.3s ease;
+}
+
+.action:hover{
+    transform:translateY(-2px);
+    background:rgba(255,255,255,.09);
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer{
+    padding:30px 0 45px;
+    border-top:1px solid rgba(255,255,255,.05);
+}
+
+.footer-inner{
+    width:min(1180px, calc(100% - 10vw));
+    margin:0 auto;
+    display:flex;
+    justify-content:space-between;
+    gap:30px;
+    color:#5f5f5f;
+    font-size:11px;
+}
+
+/* =========================================================
+   REVEAL
+========================================================= */
+
+.reveal{
+    opacity:0;
+    transform:translateY(24px);
+    transition:
+        opacity .75s ease,
+        transform .75s ease;
+}
+
+.reveal.visible{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1100px){
+
+    .status-card{
+        position:relative;
+        right:auto;
+        bottom:auto;
+        margin:0 auto 55px;
+        width:min(1180px, calc(100% - 10vw));
+    }
+
+    .hero{
+        min-height:760px;
+    }
+
+    .brief-grid,
+    .position-grid,
+    .media-grid,
+    .failure-layout,
+    .evidence-grid{
+        grid-template-columns:1fr;
+    }
+
+    .constraint-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .maturity-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .arch-subgraph{
+        grid-template-columns:1fr;
+    }
+
+    .performance-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .quick-grid{
+        grid-template-columns:1fr;
+    }
+
+    .quick-side{
+        border-left:0;
+        border-top:1px solid rgba(255,255,255,.08);
+    }
+}
+
+@media(max-width:800px){
+
+    .container,
+    .hero-content,
+    .footer-inner{
+        width:min(100% - 40px,1180px);
+    }
+
+    .section{
+        padding:90px 0;
+    }
+
+    .hero-title{
+        font-size:clamp(44px,13vw,72px);
+        letter-spacing:-3px;
+    }
+
+    .hero-description{
+        font-size:17px;
+    }
+
+    .before-after{
+        grid-template-columns:1fr;
+    }
+
+    .middle-arrow{
+        transform:rotate(90deg);
+    }
+
+    .goal-grid,
+    .why-grid,
+    .parallel-grid,
+    .state-layout{
+        grid-template-columns:1fr;
+    }
+
+    .table-row{
+        min-width:760px;
+    }
+
+    .decision-table{
+        overflow-x:auto;
+    }
+
+    .evolution{
+        grid-template-columns:1fr;
+    }
+
+    .position-grid-lines{
+        grid-template-columns:1fr;
+    }
+
+    .constraint-grid,
+    .maturity-grid,
+    .performance-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .footer-inner{
+        flex-direction:column;
+    }
+}
+
+@media(max-width:540px){
+
+    .hero{
+        min-height:820px;
+    }
+
+    .hero-meta{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+    }
+
+    .quick-main,
+    .quick-side{
+        padding:25px;
+    }
+
+    .constraint-grid,
+    .maturity-grid,
+    .performance-grid{
+        grid-template-columns:1fr;
+    }
+
+    .final-box{
+        padding:28px;
+    }
+
+    pre{
+        font-size:10px;
+    }
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+    <img
+        class="hero-image"
+        src="https://images6.alphacoders.com/559/thumb-1920-559687.jpg"
+        alt="Ashes of the Fallen environment">
+
+    <div class="hero-content">
+
+        <a
+            class="back-button"
+            href="https://sites.google.com/view/tristanbernier/systems"
+        >
+            Back to Systems
+        </a>
+
+        <div class="hero-label">
+            Architecture Systems
+        </div>
+
+        <h1 class="hero-title">
+            Bootstrap Framework
+        </h1>
+
+        <p class="hero-description">
+            A deterministic startup layer designed to initialize
+            Ashes Engine's foundational services, registries and
+            persistent systems before gameplay becomes available.
+        </p>
+
+        <div class="hero-meta">
+
+            <div class="meta-pill">Unity</div>
+            <div class="meta-pill">C#</div>
+            <div class="meta-pill">Runtime Architecture</div>
+            <div class="meta-pill">Initialization</div>
+
+        </div>
+
+    </div>
+
+
+    <div class="status-card">
+
+        <div class="status-label">
+            SYSTEM STATUS
+        </div>
+
+        <div class="status-title">
+            ACTIVE DEVELOPMENT
+        </div>
+
+        <div class="status-grid">
+
+            <div class="status-row">
+                <span class="status-key">Bootstrap Scene</span>
+                <span class="status-value">
+                    <span class="status-dot"></span>
+                    READY
+                </span>
+            </div>
+
+            <div class="status-row">
+                <span class="status-key">Core Services</span>
+                <span class="status-value">INITIALIZED</span>
+            </div>
+
+            <div class="status-row">
+                <span class="status-key">Registries</span>
+                <span class="status-value">INITIALIZED</span>
+            </div>
+
+            <div class="status-row">
+                <span class="status-key">Menu Transition</span>
+                <span class="status-value">READY</span>
+            </div>
+
+            <div class="status-row">
+                <span class="status-key">Background Loading</span>
+                <span class="status-value">ACTIVE</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     30 SECOND OVERVIEW
+========================================================= -->
+
+<div class="quick-overview">
+
+    <div class="container">
+
+        <div class="quick-grid glass reveal">
+
+            <div class="quick-main">
+
+                <div class="quick-title">
+                    30 SECOND OVERVIEW
+                </div>
+
+                <h2>
+                    A controlled entry point for the engine.
+                </h2>
+
+                <p>
+                    Bootstrap exists to establish Ashes Engine's
+                    foundational runtime before gameplay systems begin
+                    depending on it. It separates engine initialization
+                    from scene presentation and provides a predictable
+                    lifecycle for persistent infrastructure.
+                </p>
+
+            </div>
+
+
+            <div class="quick-side">
+
+                <div class="quick-facts">
+
+                    <div class="quick-fact">
+                        <span>Problem</span>
+                        <span>Implicit startup dependencies</span>
+                    </div>
+
+                    <div class="quick-fact">
+                        <span>Solution</span>
+                        <span>Dedicated initialization lifecycle</span>
+                    </div>
+
+                    <div class="quick-fact">
+                        <span>Architecture</span>
+                        <span>Services + registries</span>
+                    </div>
+
+                    <div class="quick-fact">
+                        <span>Priority</span>
+                        <span>Maintainability + predictable startup</span>
+                    </div>
+
+                    <div class="quick-fact">
+                        <span>Status</span>
+                        <span>Active development</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     ENGINEERING BRIEF
+========================================================= -->
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="brief-grid reveal">
+
+            <div>
+
+                <div class="section-label">
+                    01 — ENGINEERING BRIEF
+                </div>
+
+                <h2 class="section-title">
+                    The problem
+                </h2>
+
+                <div class="problem-card glass">
+
+                    <div class="card-kicker">
+                        INITIALIZATION
+                    </div>
+
+                    <h3>
+                        Startup became a dependency problem.
+                    </h3>
+
+                    <p>
+                        As Ashes Engine expanded, more systems depended
+                        on services, registries and persistent state being
+                        available before they could safely operate.
+                        Scene-level initialization created implicit ordering
+                        assumptions and made the runtime lifecycle harder
+                        to reason about.
+                    </p>
+
+                    <p>
+                        Bootstrap was introduced to make that lifecycle
+                        explicit and keep engine infrastructure separate
+                        from the scenes that consume it.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="metrics-panel">
+
+                <div class="metric glass">
+
+                    <div class="metric-label">SCOPE</div>
+
+                    <div class="metric-value">
+                        Engine Architecture
+                    </div>
+
+                </div>
+
+                <div class="metric glass">
+
+                    <div class="metric-label">PRIMARY CONCERN</div>
+
+                    <div class="metric-value">
+                        Initialization & Dependencies
+                    </div>
+
+                </div>
+
+                <div class="metric glass">
+
+                    <div class="metric-label">RUNTIME</div>
+
+                    <div class="metric-value">
+                        Unity
+                    </div>
+
+                </div>
+
+                <div class="metric glass">
+
+                    <div class="metric-label">ARCHITECTURAL GOAL</div>
+
+                    <div class="metric-value">
+                        Predictable runtime lifecycle
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="constraint-grid reveal">
+
+            <div class="constraint glass">
+
+                <div class="constraint-label">
+                    TARGET
+                </div>
+
+                <div class="constraint-value">
+                    Unity / C#
+                </div>
+
+            </div>
+
+            <div class="constraint glass">
+
+                <div class="constraint-label">
+                    PRIORITY
+                </div>
+
+                <div class="constraint-value">
+                    Maintainability over abstraction
+                </div>
+
+            </div>
+
+            <div class="constraint glass">
+
+                <div class="constraint-label">
+                    DEPENDENCIES
+                </div>
+
+                <div class="constraint-value">
+                    Minimal external packages
+                </div>
+
+            </div>
+
+            <div class="constraint glass">
+
+                <div class="constraint-label">
+                    STARTUP
+                </div>
+
+                <div class="constraint-value">
+                    Make the front-end available quickly
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     BEFORE / AFTER
+========================================================= -->
+
+<section class="section">
+
+    <div class="container reveal">
+
+        <div class="section-label">
+            02 — ARCHITECTURAL CHANGE
+        </div>
+
+        <h2 class="section-title">
+            From implicit startup<br>
+            to explicit startup.
+        </h2>
+
+        <p class="section-description">
+            The goal was not simply to create another manager.
+            It was to establish a clear boundary between engine
+            initialization and gameplay content.
+        </p>
+
+
+        <div class="before-after">
+
+            <div class="arch-card glass">
+
+                <div class="arch-card-header">
+
+                    <div class="arch-card-title">
+                        Before
+                    </div>
+
+                    <div class="arch-card-badge">
+                        implicit
+                    </div>
+
+                </div>
+
+                <div class="arch-content">
+
+                    <div class="stack-node">Scene</div>
+                    <div class="stack-arrow">↓</div>
+                    <div class="stack-node">Weather</div>
+                    <div class="stack-arrow">↓</div>
+                    <div class="stack-node">Audio</div>
+                    <div class="stack-arrow">↓</div>
+                    <div class="stack-node">Quest</div>
+                    <div class="stack-arrow">↓</div>
+                    <div class="stack-node">World</div>
+
+                </div>
+
+                <p class="before-note">
+                    Scene-level initialization can create hidden
+                    dependencies and ordering assumptions.
+                </p>
+
+            </div>
+
+
+            <div class="middle-arrow">
+                →
+            </div>
+
+
+            <div class="arch-card glass">
+
+                <div class="arch-card-header">
+
+                    <div class="arch-card-title">
+                        After
+                    </div>
+
+                    <div class="arch-card-badge">
+                        explicit
+                    </div>
+
+                </div>
+
+                <div class="arch-content">
+
+                    <div class="stack-node">Bootstrap</div>
+                    <div class="stack-arrow">↓</div>
+                    <div class="stack-node">Core Infrastructure</div>
+                    <div class="stack-arrow">↓</div>
+                    <div class="stack-node">Validated Dependencies</div>
+                    <div class="stack-arrow">↓</div>
+                    <div class="stack-node">Gameplay Systems</div>
+                    <div class="stack-arrow">↓</div>
+                    <div class="stack-node">World Runtime</div>
+
+                </div>
+
+                <p class="before-note">
+                    Startup becomes a deliberate engine lifecycle rather
+                    than a side effect of scene loading.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     ARCHITECTURE
+========================================================= -->
+
+<section class="section">
+
+    <div class="container reveal">
+
+        <div class="section-label">
+            03 — SYSTEM ARCHITECTURE
+        </div>
+
+        <h2 class="section-title">
+            One entry point.<br>
+            Many systems.
+        </h2>
+
+        <p class="section-description">
+            Bootstrap orchestrates initialization without becoming
+            responsible for the internal behavior of every subsystem.
+        </p>
+
+
+        <div class="architecture-wrap glass">
+
+            <div class="architecture-topbar">
+
+                <span>
+                    RUNTIME DEPENDENCY GRAPH
+                </span>
+
+                <strong>
+                    ASHES ENGINE
+                </strong>
+
+            </div>
+
+
+            <div class="architecture-canvas">
+
+                <div class="architecture-column">
+
+                    <a
+                        class="arch-node main clickable"
+                        href="#"
+                        data-system="bootstrap"
+                    >
+
+                        <div class="arch-node-label">
+                            ENTRY
+                        </div>
+
+                        <div class="arch-node-title">
+                            Bootstrap
+                        </div>
+
+                        <div class="arch-node-description">
+                            Startup orchestration and runtime initialization.
+                        </div>
+
+                    </a>
+
+
+                    <div class="arch-connector"></div>
+
+
+                    <a
+                        class="arch-node clickable"
+                        href="#"
+                        data-system="configuration"
+                    >
+
+                        <div class="arch-node-label">
+                            FOUNDATION
+                        </div>
+
+                        <div class="arch-node-title">
+                            Configuration
+                        </div>
+
+                        <div class="arch-node-description">
+                            Runtime configuration and foundational data.
+                        </div>
+
+                    </a>
+
+
+                    <div class="arch-connector"></div>
+
+
+                    <div class="arch-subgraph">
+
+                        <a
+                            class="arch-node clickable"
+                            href="#"
+                            data-system="asset-registry"
+                        >
+
+                            <div class="arch-node-label">
+                                REGISTRY
+                            </div>
+
+                            <div class="arch-node-title">
+                                Asset Registry
+                            </div>
+
+                            <div class="arch-node-description">
+                                Centralized asset lookup and registration.
+                            </div>
+
+                        </a>
+
+
+                        <a
+                            class="arch-node clickable"
+                            href="#"
+                            data-system="event-bus"
+                        >
+
+                            <div class="arch-node-label">
+                                SERVICE
+                            </div>
+
+                            <div class="arch-node-title">
+                                Event Bus
+                            </div>
+
+                            <div class="arch-node-description">
+                                Communication boundary between systems.
+                            </div>
+
+                        </a>
+
+
+                        <a
+                            class="arch-node clickable"
+                            href="#"
+                            data-system="audio"
+                        >
+
+                            <div class="arch-node-label">
+                                SERVICE
+                            </div>
+
+                            <div class="arch-node-title">
+                                Audio
+                            </div>
+
+                            <div class="arch-node-description">
+                                Persistent audio infrastructure.
+                            </div>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="arch-connector"></div>
+
+
+                    <a
+                        class="arch-node clickable"
+                        href="#"
+                        data-system="gameplay"
+                    >
+
+                        <div class="arch-node-label">
+                            RUNTIME
+                        </div>
+
+                        <div class="arch-node-title">
+                            Gameplay Systems
+                        </div>
+
+                        <div class="arch-node-description">
+                            Systems that consume established infrastructure.
+                        </div>
+
+                    </a>
+
+
+                    <div class="arch-connector"></div>
+
+
+                    <a
+                        class="arch-node main clickable"
+                        href="#"
+                        data-system="world"
+                    >
+
+                        <div class="arch-node-label">
+                            DESTINATION
+                        </div>
+
+                        <div class="arch-node-title">
+                            Ashes World
+                        </div>
+
+                        <div class="arch-node-description">
+                            Player-facing runtime after required infrastructure exists.
+                        </div>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="arch-description">
+
+                <strong class="muted">
+                    Architectural intent:
+                </strong>
+
+                Bootstrap owns lifecycle and ordering while each subsystem
+                retains responsibility for its own implementation.
+                This avoids turning startup into a monolithic Game Manager.
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     SYSTEM POSITION
+========================================================= -->
+
+<section class="section">
+
+    <div class="container reveal">
+
+        <div class="section-label">
+            04 — SYSTEM POSITION
+        </div>
+
+        <h2 class="section-title">
+            Where Bootstrap<br>
+            sits in Ashes Engine
+        </h2>
+
+        <div class="position-grid">
+
+            <div class="position-map glass">
+
+                <div class="section-label">
+                    ARCHITECTURE CONTEXT
+                </div>
+
+                <div class="position-center">
+                    BOOTSTRAP
+                </div>
+
+                <div class="position-grid-lines">
+
+                    <div class="position-node">
+                        Configuration
+                    </div>
+
+                    <div class="position-node">
+                        Registries
+                    </div>
+
+                    <div class="position-node">
+                        Services
+                    </div>
+
+                    <div class="position-node">
+                        Runtime
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="position-facts">
+
+                <div class="position-fact glass">
+
+                    <div class="position-fact-label">
+                        INCOMING
+                    </div>
+
+                    <div class="position-fact-value">
+                        Configuration and startup state
+                    </div>
+
+                </div>
+
+                <div class="position-fact glass">
+
+                    <div class="position-fact-label">
+                        INITIALIZES
+                    </div>
+
+                    <div class="position-fact-value">
+                        Core services and registries
+                    </div>
+
+                </div>
+
+                <div class="position-fact glass">
+
+                    <div class="position-fact-label">
+                        CONSUMED BY
+                    </div>
+
+                    <div class="position-fact-value">
+                        Gameplay systems and world runtime
+                    </div>
+
+                </div>
+
+                <div class="position-fact glass">
+
+                    <div class="position-fact-label">
+                        LIFECYCLE
+                    </div>
+
+                    <div class="position-fact-value">
+                        Persistent engine infrastructure
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     DESIGN GOALS
+========================================================= -->
+
+<section class="section">
+
+    <div class="container reveal">
+
+        <div class="section-label">
+            05 — DESIGN GOALS
+        </div>
+
+        <h2 class="section-title">
+            What the architecture<br>
+            is optimizing for.
+        </h2>
+
+        <div class="goal-grid">
+
+            <div class="goal glass">
+
+                <div class="goal-number">01</div>
+
+                <h3>
+                    Deterministic startup
+                </h3>
+
+                <p>
+                    Remove reliance on scene ordering and make
+                    initialization responsibilities explicit.
+                </p>
+
+            </div>
+
+
+            <div class="goal glass">
+
+                <div class="goal-number">02</div>
+
+                <h3>
+                    Minimal critical path
+                </h3>
+
+                <p>
+                    Keep non-essential work from unnecessarily
+                    blocking the player-facing startup path.
+                </p>
+
+            </div>
+
+
+            <div class="goal glass">
+
+                <div class="goal-number">03</div>
+
+                <h3>
+                    Persistent infrastructure
+                </h3>
+
+                <p>
+                    Keep core systems available across scene
+                    transitions without repeated reconstruction.
+                </p>
+
+            </div>
+
+
+            <div class="goal glass">
+
+                <div class="goal-number">04</div>
+
+                <h3>
+                    Explicit dependencies
+                </h3>
+
+                <p>
+                    Systems should know what they require without
+                    relying on one broad global manager.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     WHY / WHY NOT
+========================================================= -->
+
+<section class="section">
+
+    <div class="container reveal">
+
+        <div class="section-label">
+            06 — WHY THIS / WHY NOT
+        </div>
+
+        <h2 class="section-title">
+            The architecture<br>
+            was a choice.
+        </h2>
+
+        <div class="why-grid">
+
+            <div class="why-card glass">
+
+                <div class="why-label">
+                    WHY BOOTSTRAP?
+                </div>
+
+                <h3>
+                    Explicit lifecycle ownership
+                </h3>
+
+                <p>
+                    Startup becomes an engine responsibility instead of
+                    being scattered across whatever scene happens to load.
+                </p>
+
+            </div>
+
+
+            <div class="why-card glass">
+
+                <div class="why-label">
+                    WHY NOT SCENE INIT?
+                </div>
+
+                <h3>
+                    Scenes are content boundaries
+                </h3>
+
+                <p>
+                    Gameplay scenes should describe content and runtime
+                    composition rather than reconstructing engine infrastructure.
+                </p>
+
+            </div>
+
+
+            <div class="why-card glass">
+
+                <div class="why-label">
+                    WHY NOT ONE GAME MANAGER?
+                </div>
+
+                <h3>
+                    Avoid broad ownership
+                </h3>
+
+                <p>
+                    A single manager can become a dependency hub with unclear
+                    responsibility and increasingly difficult testing boundaries.
+                </p>
+
+            </div>
+
+
+            <div class="why-card glass">
+
+                <div class="why-label">
+                    WHY DEFER WORK?
+                </div>
+
+                <h3>
+                    Not every system belongs on the critical path
+                </h3>
+
+                <p>
+                    Work that does not affect initial usability can be
+                    scheduled separately from the minimum startup sequence.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     STARTUP SEQUENCE
+========================================================= -->
+
+<section class="section">
+
+    <div class="container reveal">
+
+        <div class="section-label">
+            07 — STARTUP SEQUENCE
+        </div>
+
+        <h2 class="section-title">
+            Initialization is a lifecycle.
+        </h2>
+
+        <p class="section-description">
+            The important distinction is between work required to make
+            the application usable and work that can continue afterward.
+        </p>
+
+
+        <div class="timeline">
+
+            <div class="timeline-line"></div>
+
+
+            <div class="timeline-item">
+
+                <div class="timeline-marker"></div>
+
+                <div class="timeline-step">STEP 01</div>
+
+                <h3>
+                    Bootstrap scene loads
+                </h3>
+
+                <p>
+                    The dedicated startup scene becomes the entry point
+                    for engine initialization.
+                </p>
+
+            </div>
+
+
+            <div class="timeline-item">
+
+                <div class="timeline-marker"></div>
+
+                <div class="timeline-step">STEP 02</div>
+
+                <h3>
+                    Configuration is loaded
+                </h3>
+
+                <p>
+                    Foundational runtime data is prepared before systems
+                    that depend on it attempt initialization.
+                </p>
+
+            </div>
+
+
+            <div class="timeline-item">
+
+                <div class="timeline-marker"></div>
+
+                <div class="timeline-step">STEP 03</div>
+
+                <h3>
+                    Registries and services initialize
+                </h3>
+
+                <p>
+                    Core infrastructure becomes available to dependent systems.
+                </p>
+
+            </div>
+
+
+            <div class="timeline-item">
+
+                <div class="timeline-marker"></div>
+
+                <div class="timeline-step">STEP 04</div>
+
+                <h3>
+                    Required dependencies are validated
+                </h3>
+
+                <p>
+                    The runtime verifies the infrastructure required by
+                    systems before treating them as ready.
+                </p>
+
+            </div>
+
+
+            <div class="timeline-item">
+
+                <div class="timeline-marker"></div>
+
+                <div class="timeline-step">STEP 05</div>
+
+                <h3>
+                    Menu becomes available
+                </h3>
+
+                <p>
+                    Player-facing presentation does not unnecessarily wait
+                    for every non-critical subsystem.
+                </p>
+
+            </div>
+
+
+            <div class="timeline-item">
+
+                <div class="timeline-marker"></div>
+
+                <div class="timeline-step">STEP 06</div>
+
+                <h3>
+                    Deferred systems continue
+                </h3>
+
+                <p>
+                    Background initialization proceeds where the architecture
+                    allows it to remain off the critical startup path.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="parallel-grid">
+
+            <div class="path-card glass">
+
+                <div class="path-label">
+                    CRITICAL PATH
+                </div>
+
+                <h3>
+                    Required before the player can proceed
+                </h3>
+
+                <div class="path-list">
+
+                    <div class="path-item">Bootstrap</div>
+                    <div class="path-item">Configuration</div>
+                    <div class="path-item">Required services</div>
+                    <div class="path-item">Dependency validation</div>
+                    <div class="path-item">Menu availability</div>
+
+                </div>
+
+            </div>
+
+
+            <div class="path-card glass">
+
+                <div class="path-label">
+                    DEFERRED PATH
+                </div>
+
+                <h3>
+                    Work that does not need to block startup
+                </h3>
+
+                <div class="path-list">
+
+                    <div class="path-item">Secondary asset preparation</div>
+                    <div class="path-item">Non-critical systems</div>
+                    <div class="path-item">Background initialization</div>
+                    <div class="path-item">World preparation</div>
+                    <div class="path-item">Future streaming-related work</div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     ENGINEERING DECISIONS
+========================================================= -->
+
+<section class="section">
+
+    <div class="container reveal">
+
+        <div class="section-label">
+            08 — ENGINEERING DECISIONS
+        </div>
+
+        <h2 class="section-title">
+            Architecture is mostly<br>
+            trade-offs.
+        </h2>
+
+
+        <div class="decision-table glass">
+
+            <div class="table-row table-head">
+
+                <div>DECISION</div>
+                <div>ALTERNATIVE</div>
+                <div>REASON</div>
+
+            </div>
+
+
+            <div class="table-row">
+
+                <div>Dedicated bootstrap scene</div>
+
+                <div>Initialize from the Menu</div>
+
+                <div>
+                    Separates engine startup infrastructure
+                    from presentation.
+                </div>
+
+            </div>
+
+
+            <div class="table-row">
+
+                <div>Explicit services</div>
+
+                <div>Monolithic Game Manager</div>
+
+                <div>
+                    Keeps ownership boundaries clearer and
+                    avoids one broad dependency hub.
+                </div>
+
+            </div>
+
+
+            <div class="table-row">
+
+                <div>Data-driven configuration</div>
+
+                <div>Hardcoded values</div>
+
+                <div>
+                    Keeps content changes out of architectural code.
+                </div>
+
+            </div>
+
+
+            <div class="table-row">
+
+                <div>Deferred initialization</div>
+
+                <div>Initialize everything before Menu</div>
+
+                <div>
+                    Keeps non-critical work from expanding the
+                    initial startup path unnecessarily.
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="tradeoff glass">
+
+            <h3>
+                Trade-off
+            </h3>
+
+            <p>
+                Explicit lifecycle management adds structure and therefore
+                adds some complexity. The trade is intentional: as the
+                engine accumulates persistent systems, predictable ownership
+                becomes more valuable than minimizing initialization code.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     IMPLEMENTATION
+========================================================= -->
+
+<section class="section">
+
+    <div class="container reveal">
+
+        <div class="section-label">
+            09 — IMPLEMENTATION
+        </div>
+
+        <h2 class="section-title">
+            The architecture<br>
+            becomes code.
+        </h2>
+
+        <p class="section-description">
+            These are deliberately placeholders for the real source.
+            Replace them with actual excerpts from the project so every
+            technical claim on the page is directly verifiable.
+        </p>
+
+
+        <div class="code-grid">
+
+            <div class="code-card glass">
+
+                <div class="code-header">
+                    <div class="code-title">
+                        Bootstrap orchestration
+                    </div>
+
+                    <div class="code-type">
+                        C#
+                    </div>
+                </div>
+
+<pre><code>// Replace with the actual implementation.
+
+public async Task InitializeAsync()
+{
+    await InitializeConfigurationAsync();
+    await InitializeRegistriesAsync();
+    await InitializeCoreServicesAsync();
+}</code></pre>
+
+                <div class="code-description">
+                    Show the real orchestration boundary here.
+                    Keep the excerpt small enough that the architecture
+                    remains understandable at a glance.
+                </div>
+
+            </div>
+
+
+            <div class="code-card glass">
+
+                <div class="code-header">
+                    <div class="code-title">
+                        Dependency registration
+                    </div>
+
+                    <div class="code-type">
+                        C#
+                    </div>
+                </div>
+
+<pre><code>// Replace with the actual implementation.
+
+services.Register&lt;IAssetRegistry&gt;(assetRegistry);
+services.Register&lt;IWorldState&gt;(worldState);
+services.Register&lt;IAudioService&gt;(audioService);</code></pre>
+
+                <div class="code-description">
+                    Show how real dependencies become available to
+                    systems without relying on scene lookup.
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     FAILURE
+========================================================= -->
+
+<section class="section">
+
+    <div class="container reveal">
+
+        <div class="section-label">
+            10 — FAILURE & RECOVERY
+        </div>
+
+        <h2 class="section-title">
+            What happens when<br>
+            startup goes wrong?
+        </h2>
+
+        <div class="failure-layout">
+
+            <div class="failure-flow glass">
+
+                <div class="failure-stack">
+
+                    <div class="failure-node">
+                        Initialize
+                    </div>
+
+                    <div class="failure-arrow">↓</div>
+
+                    <div class="failure-node">
+                        Validate Dependencies
+                    </div>
+
+                    <div class="failure-arrow">↓</div>
+
+                    <div class="failure-node">
+                        Required Dependency Available?
+                    </div>
+
+                    <div class="failure-arrow">↓</div>
+
+                    <div class="failure-outcomes">
+
+                        <div class="failure-outcome">
+                            PASS → Continue
+                        </div>
+
+                        <div class="failure-outcome">
+                            FAIL → Diagnose
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="failure-notes">
+
+                <div class="failure-note glass">
+
+                    <h3>
+                        Required systems
+                    </h3>
+
+                    <p>
+                        Document the actual behavior here: stop,
+                        retry, fallback or diagnostic handling.
+                    </p>
+
+                </div>
+
+
+                <div class="failure-note glass">
+
+                    <h3>
+                        Optional systems
+                    </h3>
+
+                    <p>
+                        Identify which systems can degrade without
+                        preventing the main application from starting.
+                    </p>
+
+                </div>
+
+
+                <div class="failure-note glass">
+
+                    <h3>
+                        Diagnostics
+                    </h3>
+
+                    <p>
+                        Show the real logging, assertions or validation
+                        tooling used during startup.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     PERFORMANCE
+========================================================= -->
+
+<section class="section">
+
+    <div class="container reveal">
+
+        <div class="section-label">
+            11 — PERFORMANCE
+        </div>
+
+        <h2 class="section-title">
+            Measure it.<br>
+            Don't guess.
+        </h2>
+
+
+        <div class="performance-grid">
+
+            <div class="performance-card glass">
+
+                <div class="performance-label">
+                    STARTUP TIME
+                </div>
+
+                <div class="performance-value">
+                    Not yet benchmarked
+                </div>
+
+                <div class="performance-note">
+                    Replace with a real measurement.
+                </div>
+
+            </div>
+
+
+            <div class="performance-card glass">
+
+                <div class="performance-label">
+                    ALLOCATION
+                </div>
+
+                <div class="performance-value">
+                    Not yet profiled
+                </div>
+
+                <div class="performance-note">
+                    Record startup allocations where meaningful.
+                </div>
+
+            </div>
+
+
+            <div class="performance-card glass">
+
+                <div class="performance-label">
+                    ASYNC INIT
+                </div>
+
+                <div class="performance-value">
+                    Implemented
+                </div>
+
+                <div class="performance-note">
+                    Document the actual deferred work.
+                </div>
+
+            </div>
+
+
+            <div class="performance-card glass">
+
+                <div class="performance-label">
+                    CRITICAL PATH
+                </div>
+
+                <div class="performance-value">
+                    Under review
+                </div>
+
+                <div class="performance-note">
+                    Refine after profiling.
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="performance-warning">
+            Portfolio rule: never add a benchmark because it looks impressive.
+            Add it because you measured it.
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     DEVELOPMENT EVOLUTION
+========================================================= -->
+
+<section class="section">
+
+    <div class="container reveal">
+
+        <div class="section-label">
+            12 — DEVELOPMENT EVOLUTION
+        </div>
+
+        <h2 class="section-title">
+            How the architecture changed.
+        </h2>
+
+        <p class="section-description">
+            This is retrospective documentation. It should describe the
+            actual evolution of the project without implying that every
+            decision was perfectly planned from the beginning.
+        </p>
+
+
+        <div class="evolution">
+
+            <div class="evolution-card glass">
+
+                <div class="evolution-step">
+                    EARLY
+                </div>
+
+                <h3>
+                    Distributed initialization
+                </h3>
+
+                <p>
+                    Runtime infrastructure was closer to individual
+                    scenes and the systems using it.
+                </p>
+
+            </div>
+
+
+            <div class="evolution-card glass">
+
+                <div class="evolution-step">
+                    PROBLEM
+                </div>
+
+                <h3>
+                    Dependencies became harder to reason about
+                </h3>
+
+                <p>
+                    More persistent systems increased the importance
+                    of initialization order and ownership.
+                </p>
+
+            </div>
+
+
+            <div class="evolution-card glass">
+
+                <div class="evolution-step">
+                    CURRENT
+                </div>
+
+                <h3>
+                    Dedicated bootstrap lifecycle
+                </h3>
+
+                <p>
+                    Initialization is being moved into an explicit
+                    engine-level startup architecture.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="evolution-line"></div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     TECHNICAL MATURITY
+========================================================= -->
+
+<section class="section">
+
+    <div class="container reveal">
+
+        <div class="section-label">
+            13 — TECHNICAL MATURITY
+        </div>
+
+        <h2 class="section-title">
+            What is mature.<br>
+            What is still evolving.
+        </h2>
+
+        <div class="maturity-grid">
+
+            <div class="maturity-card glass">
+
+                <div class="maturity-label">
+                    IMPLEMENTATION
+                </div>
+
+                <div class="maturity-value">
+                    Active
+                </div>
+
+                <div class="maturity-bar">
+                    <div
+                        class="maturity-fill"
+                        style="width:85%;"
+                    ></div>
+                </div>
+
+            </div>
+
+
+            <div class="maturity-card glass">
+
+                <div class="maturity-label">
+                    ARCHITECTURE
+                </div>
+
+                <div class="maturity-value">
+                    Established
+                </div>
+
+                <div class="maturity-bar">
+                    <div
+                        class="maturity-fill"
+                        style="width:75%;"
+                    ></div>
+                </div>
+
+            </div>
+
+
+            <div class="maturity-card glass">
+
+                <div class="maturity-label">
+                    VALIDATION
+                </div>
+
+                <div class="maturity-value">
+                    Partial
+                </div>
+
+                <div class="maturity-bar">
+                    <div
+                        class="maturity-fill"
+                        style="width:50%;"
+                    ></div>
+                </div>
+
+            </div>
+
+
+            <div class="maturity-card glass">
+
+                <div class="maturity-label">
+                    PROFILING
+                </div>
+
+                <div class="maturity-value">
+                    Early
+                </div>
+
+                <div class="maturity-bar">
+                    <div
+                        class="maturity-fill"
+                        style="width:30%;"
+                    ></div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     CURRENT STATE
+========================================================= -->
+
+<section class="section">
+
+    <div class="container reveal">
+
+        <div class="section-label">
+            14 — CURRENT STATE
+        </div>
+
+        <h2 class="section-title">
+            What exists.<br>
+            What remains.
+        </h2>
+
+
+        <div class="state-layout">
+
+            <div class="state-panel glass">
+
+                <div class="state-title">
+                    IMPLEMENTED / ACTIVE
+                </div>
+
+                <div class="state-list">
+
+                    <div class="state-item">
+                        <span class="state-symbol done"></span>
+                        <span>Dedicated bootstrap scene</span>
+                    </div>
+
+                    <div class="state-item">
+                        <span class="state-symbol done"></span>
+                        <span>Core service initialization</span>
+                    </div>
+
+                    <div class="state-item">
+                        <span class="state-symbol done"></span>
+                        <span>Registry initialization</span>
+                    </div>
+
+                    <div class="state-item">
+                        <span class="state-symbol done"></span>
+                        <span>Menu transition</span>
+                    </div>
+
+                    <div class="state-item">
+                        <span class="state-symbol progress"></span>
+                        <span>Deferred initialization strategy</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="state-panel glass">
+
+                <div class="state-title">
+                    REMAINING / FUTURE
+                </div>
+
+                <div class="state-list">
+
+                    <div class="state-item">
+                        <span class="state-symbol progress"></span>
+                        <span>Formal startup profiling</span>
+                    </div>
+
+                    <div class="state-item">
+                        <span class="state-symbol progress"></span>
+                        <span>Expanded failure recovery</span>
+                    </div>
+
+                    <div class="state-item">
+                        <span class="state-symbol future"></span>
+                        <span>Automated initialization tests</span>
+                    </div>
+
+                    <div class="state-item">
+                        <span class="state-symbol future"></span>
+                        <span>Editor-side diagnostics</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     MEDIA / SCREENSHOT PLACEHOLDERS
+========================================================= -->
+
+<section class="section">
+
+    <div class="container reveal">
+
+        <div class="section-label">
+            15 — VISUAL EVIDENCE
+        </div>
+
+        <h2 class="section-title">
+            Show the system.
+        </h2>
+
+        <p class="section-description">
+            These placeholders are intentionally removable. Replace them
+            with real screenshots, diagrams or runtime captures as the
+            project documentation develops.
+        </p>
+
+
+        <div class="media-grid">
+
+            <div class="media-placeholder">
+
+                <div class="media-placeholder-content">
+
+                    <div class="media-icon">
+                        ▧
+                    </div>
+
+                    <h3>
+                        Bootstrap Architecture Screenshot
+                    </h3>
+
+                    <p>
+                        Place a high-resolution screenshot of the Bootstrap
+                        scene, hierarchy or editor setup here. Prefer an
+                        image that clearly demonstrates the runtime structure.
+                    </p>
+
+                    <div class="media-label">
+                        PLACEHOLDER — 16:9
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="media-side">
+
+                <div class="media-placeholder small">
+
+                    <div class="media-placeholder-content">
+
+                        <div class="media-icon">
+                            ◫
+                        </div>
+
+                        <h3>
+                            Runtime Startup Capture
+                        </h3>
+
+                        <p>
+                            Short frame or GIF showing Bootstrap transitioning
+                            into the Menu.
+                        </p>
+
+                        <div class="media-label">
+                            PLACEHOLDER
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="media-placeholder small">
+
+                    <div class="media-placeholder-content">
+
+                        <div class="media-icon">
+                            ◌
+                        </div>
+
+                        <h3>
+                            Profiler Capture
+                        </h3>
+
+                        <p>
+                            Unity Profiler screenshot showing startup timing,
+                            allocations or initialization phases.
+                        </p>
+
+                        <div class="media-label">
+                            PLACEHOLDER
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     EVIDENCE / LINKS
+========================================================= -->
+
+<section class="section">
+
+    <div class="container reveal">
+
+        <div class="section-label">
+            16 — SOURCE & EVIDENCE
+        </div>
+
+        <h2 class="section-title">
+            Verify the work.
+        </h2>
+
+
+        <div class="evidence-grid">
+
+            <div class="evidence-card glass">
+
+                <h3>
+                    Source Code
+                </h3>
+
+                <p>
+                    Link directly to the relevant Bootstrap files on GitHub.
+                    Avoid making reviewers search through the repository.
+                </p>
+
+                <a
+                    class="evidence-link"
+                    href="#"
+                >
+                    View source
+                </a>
+
+            </div>
+
+
+            <div class="evidence-side">
+
+                <div class="evidence-card glass">
+
+                    <h3>
+                        Runtime Demonstration
+                    </h3>
+
+                    <p>
+                        Add a short video or GIF showing the actual startup
+                        sequence and scene transition.
+                    </p>
+
+                    <a
+                        class="evidence-link"
+                        href="#"
+                    >
+                        Watch demonstration
+                    </a>
+
+                </div>
+
+
+                <div class="evidence-card glass">
+
+                    <h3>
+                        Architecture Diagram
+                    </h3>
+
+                    <p>
+                        Add the final high-resolution architecture diagram
+                        used to communicate dependencies.
+                    </p>
+
+                    <a
+                        class="evidence-link"
+                        href="#"
+                    >
+                        Open diagram
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     FINAL SUMMARY
+========================================================= -->
+
+<section class="section final-summary">
+
+    <div class="container reveal">
+
+        <div class="section-label">
+            17 — ENGINEERING SUMMARY
+        </div>
+
+        <h2 class="section-title">
+            Why Bootstrap exists.
+        </h2>
+
+
+        <div class="final-box glass">
+
+            <h3>
+                Bootstrap makes Ashes Engine's runtime lifecycle explicit
+                instead of allowing initialization to emerge from scene
+                ordering and hidden dependencies.
+            </h3>
+
+            <p>
+                Its responsibility is intentionally narrow: establish the
+                infrastructure required by the application, validate the
+                environment those systems expect, and allow player-facing
+                content to become available without unnecessarily blocking
+                on non-critical work.
+            </p>
+
+            <p>
+                The architecture is still evolving. The remaining work is
+                primarily around stronger diagnostics, profiling and formal
+                validation rather than turning Bootstrap into a monolithic
+                controller.
+            </p>
+
+
+            <div class="final-actions">
+
+                <a
+                    class="action"
+                    href="https://sites.google.com/view/tristanbernier/systems"
+                >
+                    Back to Systems
+                </a>
+
+                <a
+                    class="action"
+                    href="#"
+                >
+                    View GitHub
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer>
+
+    <div class="footer-inner">
+
+        <span>
+            ASHES ENGINE / BOOTSTRAP
+        </span>
+
+        <span>
+            Tristan Bernier
+        </span>
+
+    </div>
+
+</footer>
+
+
+<script>
+
+/* =========================================================
+   REVEAL ON SCROLL
+========================================================= */
+
+const revealElements =
+    document.querySelectorAll(".reveal");
+
+const revealObserver =
+    new IntersectionObserver(
+        (entries, observer) => {
+
+            entries.forEach(entry => {
+
+                if(!entry.isIntersecting){
+                    return;
+                }
+
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target);
+
+            });
+
+        },
+        {
+            threshold:.12
+        }
+    );
+
+revealElements.forEach(element => {
+    revealObserver.observe(element);
+});
+
+
+/* =========================================================
+   HERO PARALLAX
+========================================================= */
+
+const heroImage =
+    document.querySelector(".hero-image");
+
+window.addEventListener("scroll", () => {
+
+    if(!heroImage){
+        return;
+    }
+
+    const scrollY = window.scrollY;
+
+    if(scrollY < window.innerHeight){
+
+        heroImage.style.transform =
+            `translateY(${scrollY * .12}px) scale(1.025)`;
+
+    }
+
+});
+
+
+/* =========================================================
+   ARCHITECTURE NODE LINKS
+========================================================= */
+
+const architectureNodes =
+    document.querySelectorAll(".arch-node.clickable");
+
+architectureNodes.forEach(node => {
+
+    node.addEventListener("click", event => {
+
+        const system =
+            node.dataset.system;
+
+        /*
+            Replace this routing logic with your actual
+            GitHub Pages system paths.
+
+            Example:
+
+            window.location.href =
+                `../${system}/index.html`;
+
+            or:
+
+            window.location.href =
+                `/TristanPortfolio/systems/${system}/`;
+
+        */
+
+        if(system === "bootstrap"){
+            event.preventDefault();
+            window.scrollTo({
+                top:0,
+                behavior:"smooth"
+            });
+        }
+
+    });
+
+});
+
+
+/* =========================================================
+   STATUS MICRO INTERACTION
+========================================================= */
+
+const statusTitle =
+    document.querySelector(".status-title");
+
+if(statusTitle){
+
+    statusTitle.addEventListener("mouseenter", () => {
+        statusTitle.style.opacity = ".78";
+    });
+
+    statusTitle.addEventListener("mouseleave", () => {
+        statusTitle.style.opacity = "1";
+    });
+
+}
+
+</script>
+
+
+</body>
+
+</html>
