@@ -1,802 +1,864 @@
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  background: #050505;
-  color: #fff;
-  font-family: Manrope, sans-serif;
-  overflow-x: hidden;
+    background: #050505;
+    color: #fff;
+    font-family: Manrope, sans-serif;
+    overflow-x: hidden;
 }
 
 .page {
-  min-height: 100vh;
-  position: relative;
-  padding: 90px 6vw;
-  overflow: hidden;
+    min-height: 100vh;
+    position: relative;
+    padding: 90px 6vw;
+    overflow: hidden;
 }
 
 .page::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(rgba(0,0,0,.75), rgba(0,0,0,.95)),
-    url("https://images6.alphacoders.com/559/thumb-1920-559687.jpg")
-    center/cover no-repeat;
-  z-index: -2;
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(
+            rgba(0,0,0,.75),
+            rgba(0,0,0,.95)
+        ),
+        url("https://images6.alphacoders.com/559/thumb-1920-559687.jpg")
+        center / cover no-repeat;
+    z-index: -2;
 }
 
 .page::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(
-      rgba(255,255,255,.025) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      rgba(255,255,255,.025) 1px,
-      transparent 1px
-    );
-  background-size: 80px 80px;
-  pointer-events: none;
-  z-index: -1;
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(
+            rgba(255,255,255,.025) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.025) 1px,
+            transparent 1px
+        );
+    background-size: 80px 80px;
+    pointer-events: none;
+    z-index: -1;
 }
 
 .ambient {
-  position: absolute;
-  width: 700px;
-  height: 700px;
-  background:
-    radial-gradient(
-      circle,
-      rgba(255,255,255,.12),
-      transparent 70%
-    );
-  filter: blur(90px);
-  animation: drift 20s infinite alternate;
+    position: absolute;
+    width: 700px;
+    height: 700px;
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,.12),
+            transparent 70%
+        );
+    filter: blur(90px);
+    animation: drift 20s infinite alternate;
 }
 
 @keyframes drift {
-  from {
-    transform: translate(-200px, -100px);
-  }
+    from {
+        transform: translate(-200px,-100px);
+    }
 
-  to {
-    transform: translate(200px, 150px);
-  }
+    to {
+        transform: translate(200px,150px);
+    }
 }
 
+
+/* HEADER */
+
 .header {
-  text-align: center;
-  position: relative;
-  z-index: 5;
+    text-align: center;
+    position: relative;
+    z-index: 5;
 }
 
 .label {
-  color: #888;
-  letter-spacing: 8px;
-  font-size: 12px;
+    color: #888;
+    letter-spacing: 8px;
+    font-size: 12px;
 }
 
 h1 {
-  margin-top: 25px;
-  font-size: clamp(55px, 8vw, 110px);
-  line-height: .9;
-  letter-spacing: -6px;
+    margin-top: 25px;
+    font-size: clamp(55px,8vw,110px);
+    line-height: .9;
+    letter-spacing: -6px;
 }
 
 .subtitle {
-  max-width: 800px;
-  margin: 35px auto;
-  color: #aaa;
-  font-size: 20px;
-  line-height: 1.7;
+    max-width: 800px;
+    margin: 35px auto;
+    color: #aaa;
+    font-size: 20px;
+    line-height: 1.7;
 }
 
+
+/* MAP */
+
 .map-wrap {
-  margin-top: 80px;
-  position: relative;
+    margin-top: 80px;
+    position: relative;
 }
 
 .map {
-  position: relative;
-  height: 1980px;
-  transition:
-    transform .8s cubic-bezier(.19,1,.22,1);
-  transform-origin: 50% 50%;
-  will-change: transform;
+    position: relative;
+    height: 1980px;
+    transition:
+        transform .8s cubic-bezier(.19,1,.22,1);
+    transform-origin: 50% 50%;
+    will-change: transform;
 }
 
 svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  pointer-events: none;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
 }
 
+
+/* CONNECTIONS */
+
 .connection {
-  stroke: rgba(255,255,255,.12);
-  stroke-width: 2;
-  fill: none;
-  stroke-dasharray: 3 4;
-  opacity: 0;
-  transition:
-    stroke .4s,
-    opacity .4s,
-    stroke-width .4s;
+    stroke: rgba(255,255,255,.12);
+    stroke-width: 2;
+    fill: none;
+    stroke-dasharray: 3 4;
+    opacity: 0;
+    transition:
+        stroke .4s,
+        opacity .4s,
+        stroke-width .4s;
 }
 
 .connection.drawn {
-  opacity: 1;
+    opacity: 1;
 }
 
 .connection.flowing {
-  animation: flow 6s linear infinite;
+    animation: flow 6s linear infinite;
 }
 
 @keyframes flow {
-  to {
-    stroke-dashoffset: -100;
-  }
+    to {
+        stroke-dashoffset: -100;
+    }
 }
 
 .connection.highlight {
-  stroke: rgba(255,255,255,.9);
-  stroke-width: 2.8;
+    stroke: rgba(255,255,255,.9);
+    stroke-width: 2.8;
 }
 
 .connection.dim {
-  opacity: .07;
+    opacity: .07;
 }
 
+
+/* DEPENDENCY LINES */
+
 .dep {
-  stroke: rgba(255,255,255,.35);
-  stroke-width: 2.2;
-  fill: none;
-  stroke-dasharray: 5 7;
-  opacity: 0;
-  transition:
-    opacity .35s,
-    stroke .35s;
+    stroke: rgba(255,255,255,.35);
+    stroke-width: 2.2;
+    fill: none;
+    stroke-dasharray: 5 7;
+    opacity: 0;
+    transition:
+        opacity .35s,
+        stroke .35s;
 }
 
 .dep.active {
-  opacity: 1;
-  stroke: rgba(255,255,255,.95);
-  animation: depPulse 1.6s ease-in-out infinite;
+    opacity: 1;
+    stroke: rgba(255,255,255,.95);
+    animation: depPulse 1.6s ease-in-out infinite;
 }
 
 @keyframes depPulse {
-  0%,100% {
-    stroke-dashoffset: 0;
-  }
+    0%,100% {
+        stroke-dashoffset: 0;
+    }
 
-  50% {
-    stroke-dashoffset: -24;
-  }
+    50% {
+        stroke-dashoffset: -24;
+    }
 }
 
+
+/* NODES */
+
 .node {
-  position: absolute;
-  padding: 26px 22px;
-  background: rgba(255,255,255,.08);
-  border: 1px solid rgba(255,255,255,.2);
-  border-radius: 22px;
-  backdrop-filter: blur(20px);
-  text-align: center;
-  cursor: pointer;
-  opacity: 0;
+    position: absolute;
+    padding: 26px 22px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 22px;
+    backdrop-filter: blur(20px);
+    text-align: center;
+    cursor: pointer;
 
-  transition:
-    transform .35s cubic-bezier(.19,1,.22,1),
-    background .35s,
-    border-color .35s,
-    opacity .4s,
-    filter .4s,
-    box-shadow .35s;
+    opacity: 0;
 
-  animation: appear .7s ease forwards;
-  will-change: transform;
+    transition:
+        transform .35s cubic-bezier(.19,1,.22,1),
+        background .35s,
+        border-color .35s,
+        opacity .4s,
+        filter .4s,
+        box-shadow .35s;
+
+    animation: appear .7s ease forwards;
+    will-change: transform;
 }
 
 .node:focus-visible {
-  outline: 2px solid rgba(255,255,255,.7);
-  outline-offset: 4px;
+    outline: 2px solid rgba(255,255,255,.7);
+    outline-offset: 4px;
 }
 
 .node:hover,
 .node.previewing {
-  transform:
-    translateX(-50%)
-    translateY(-5px)
-    scale(1.025);
+    transform:
+        translateX(-50%)
+        translateY(-5px)
+        scale(1.025);
 
-  background: rgba(255,255,255,.16);
-  border-color: rgba(255,255,255,.45);
+    background: rgba(255,255,255,.16);
+    border-color: rgba(255,255,255,.45);
 
-  box-shadow:
-    0 12px 40px rgba(0,0,0,.45),
-    0 0 0 1px rgba(255,255,255,.12),
-    0 0 32px rgba(255,255,255,.08);
+    box-shadow:
+        0 12px 40px rgba(0,0,0,.45),
+        0 0 0 1px rgba(255,255,255,.12),
+        0 0 32px rgba(255,255,255,.08);
 }
 
 .node.pinned {
-  transform: translateX(-50%);
-  border-color: rgba(255,255,255,.8);
-  background: rgba(255,255,255,.18);
+    transform: translateX(-50%);
 
-  box-shadow:
-    0 16px 48px rgba(0,0,0,.5),
-    0 0 0 1px rgba(255,255,255,.2),
-    0 0 40px rgba(255,255,255,.12);
+    border-color: rgba(255,255,255,.8);
+
+    background: rgba(255,255,255,.18);
+
+    box-shadow:
+        0 16px 48px rgba(0,0,0,.5),
+        0 0 0 1px rgba(255,255,255,.2),
+        0 0 40px rgba(255,255,255,.12);
 }
 
 .node.dim {
-  opacity: .25 !important;
-  filter: saturate(.4) blur(.4px);
-  box-shadow: none;
+    opacity: .25 !important;
+    filter:
+        saturate(.4)
+        blur(.4px);
+    box-shadow: none;
 }
 
 .node.highlight {
-  border-color: rgba(255,255,255,.55);
+    border-color: rgba(255,255,255,.55);
 }
 
 @keyframes appear {
-  from {
-    opacity: 0;
-    transform:
-      translateX(-50%)
-      translateY(36px);
-  }
 
-  to {
-    opacity: 1;
-    transform:
-      translateX(-50%)
-      translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform:
+            translateX(-50%)
+            translateY(36px);
+    }
+
+    to {
+        opacity: 1;
+        transform:
+            translateX(-50%)
+            translateY(0);
+    }
 }
 
+
+/* NODE CONTENT */
+
 .node span.eyebrow {
-  color: #888;
-  font-size: 11px;
-  letter-spacing: 4px;
-  display: block;
+    color: #888;
+    font-size: 11px;
+    letter-spacing: 4px;
+    display: block;
 }
 
 .node h2 {
-  margin-top: 12px;
-  font-size: 22px;
-  font-weight: 700;
+    margin-top: 12px;
+    font-size: 22px;
+    font-weight: 700;
 }
 
 .status {
-  margin-top: 14px;
-  font-size: 12px;
-  color: #bbb;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0;
+    margin-top: 14px;
+    font-size: 12px;
+    color: #bbb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
 }
 
 .details {
-  margin-top: 14px;
-  color: #999;
-  font-size: 12.5px;
-  line-height: 1.45;
+    margin-top: 14px;
+    color: #999;
+    font-size: 12.5px;
+    line-height: 1.45;
 }
 
+
+/* STATUS DOTS */
+
 .dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 8px;
-  position: relative;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+    position: relative;
 }
 
 .dot::after {
-  content: "";
-  position: absolute;
-  inset: -5px;
-  border-radius: 50%;
-  background: inherit;
-  opacity: .5;
-  animation: dotPulse 2.6s ease-in-out infinite;
+    content: "";
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    background: inherit;
+    opacity: .5;
+    animation: dotPulse 2.6s ease-in-out infinite;
 }
 
 @keyframes dotPulse {
-  0%,100% {
-    transform: scale(1);
-    opacity: .5;
-  }
 
-  50% {
-    transform: scale(2.1);
-    opacity: 0;
-  }
+    0%,100% {
+        transform: scale(1);
+        opacity: .5;
+    }
+
+    50% {
+        transform: scale(2.1);
+        opacity: 0;
+    }
 }
 
 .dot-active {
-  background: #b7d6ff;
+    background: #b7d6ff;
 }
 
 .dot-planned {
-  background: #c9a0ff;
+    background: #c9a0ff;
 }
 
 .dot-planned::after {
-  animation-duration: 3.8s;
+    animation-duration: 3.8s;
 }
 
 .dot-development {
-  background: #f2cf9c;
+    background: #f2cf9c;
 }
 
 .dot-development::after {
-  animation-duration: 4.2s;
+    animation-duration: 4.2s;
 }
 
 
-/* Architecture layers */
+/* NODE CATEGORIES */
 
 .infrastructure {
-  border-color: rgba(120,170,255,.7);
+    border-color: rgba(120,170,255,.7);
 }
 
 .gameplay {
-  border-color: rgba(255,190,100,.7);
+    border-color: rgba(255,190,100,.7);
 }
 
 .simulation {
-  border-color: rgba(100,255,160,.7);
+    border-color: rgba(100,255,160,.7);
 }
 
 .final {
-  border-color: rgba(255,255,255,.85);
+    border-color: rgba(255,255,255,.85);
 }
 
 
-/* Node positions */
+/* NODE POSITIONS */
 
 .bootstrap {
-  top: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 230px;
-  padding: 20px;
-  animation-delay: .05s;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 230px;
+    padding: 20px;
+    animation-delay: .05s;
 }
 
 .services {
-  top: 250px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 240px;
-  padding: 22px;
-  animation-delay: .25s;
+    top: 250px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 240px;
+    padding: 22px;
+    animation-delay: .25s;
 }
 
 .assets {
-  top: 470px;
-  left: 25%;
-  transform: translateX(-50%);
-  width: 200px;
-  animation-delay: .4s;
+    top: 470px;
+    left: 25%;
+    transform: translateX(-50%);
+    width: 200px;
+    animation-delay: .4s;
 }
 
 .eventbus {
-  top: 470px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 200px;
-  animation-delay: .4s;
+    top: 470px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    animation-delay: .4s;
 }
 
 .audio {
-  top: 470px;
-  left: 75%;
-  transform: translateX(-50%);
-  width: 200px;
-  animation-delay: .4s;
+    top: 470px;
+    left: 75%;
+    transform: translateX(-50%);
+    width: 200px;
+    animation-delay: .4s;
 }
 
 .movement {
-  top: 850px;
-  left: 15%;
-  transform: translateX(-50%);
-  width: 190px;
-  animation-delay: .7s;
+    top: 850px;
+    left: 15%;
+    transform: translateX(-50%);
+    width: 190px;
+    animation-delay: .7s;
 }
 
 .combat {
-  top: 850px;
-  left: 38%;
-  transform: translateX(-50%);
-  width: 190px;
-  animation-delay: .7s;
+    top: 850px;
+    left: 38%;
+    transform: translateX(-50%);
+    width: 190px;
+    animation-delay: .7s;
 }
 
 .quest {
-  top: 850px;
-  left: 62%;
-  transform: translateX(-50%);
-  width: 190px;
-  animation-delay: .7s;
+    top: 850px;
+    left: 62%;
+    transform: translateX(-50%);
+    width: 190px;
+    animation-delay: .7s;
 }
 
 .cinematics {
-  top: 850px;
-  left: 85%;
-  transform: translateX(-50%);
-  width: 190px;
-  animation-delay: .7s;
+    top: 850px;
+    left: 85%;
+    transform: translateX(-50%);
+    width: 190px;
+    animation-delay: .7s;
 }
 
 .weather {
-  top: 1100px;
-  left: 25%;
-  transform: translateX(-50%);
-  width: 200px;
-  animation-delay: .55s;
+    top: 1100px;
+    left: 25%;
+    transform: translateX(-50%);
+    width: 200px;
+    animation-delay: .55s;
 }
 
 .ai {
-  top: 1100px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 200px;
-  animation-delay: .55s;
+    top: 1100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    animation-delay: .55s;
 }
 
 .terrain {
-  top: 1100px;
-  left: 75%;
-  transform: translateX(-50%);
-  width: 200px;
-  animation-delay: .55s;
+    top: 1100px;
+    left: 75%;
+    transform: translateX(-50%);
+    width: 200px;
+    animation-delay: .55s;
 }
 
 .worldstate {
-  top: 1450px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 320px;
-  padding: 30px;
-  animation-delay: .9s;
+    top: 1450px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 320px;
+    padding: 30px;
+    animation-delay: .9s;
 }
 
 .world {
-  top: 1750px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 420px;
-  padding: 40px;
-  border-radius: 36px;
-  background: rgba(255,255,255,.14);
-  border: 1px solid rgba(255,255,255,.6);
-
-  box-shadow:
-    0 0 90px rgba(255,150,90,.18);
-
-  animation-delay: 1.1s;
+    top: 1750px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 420px;
+    padding: 40px;
+    border-radius: 36px;
+    background: rgba(255,255,255,.14);
+    border: 1px solid rgba(255,255,255,.6);
+    box-shadow: 0 0 90px rgba(255,150,90,.18);
+    animation-delay: 1.1s;
 }
 
 .world h2 {
-  font-size: 36px;
+    font-size: 36px;
 }
 
 
-/* Inspector */
+/* INSPECTOR */
 
 .inspector {
-  position: fixed;
-  right: 36px;
-  top: 50%;
-  transform:
-    translateY(-50%)
-    translateX(120%);
+    position: fixed;
+    right: 36px;
+    top: 50%;
 
-  width: 340px;
-  max-height: 82vh;
-  overflow-y: auto;
-  padding: 32px;
-  border-radius: 28px;
+    transform:
+        translateY(-50%)
+        translateX(120%);
 
-  background: rgba(10,10,10,.85);
-  border: 1px solid rgba(255,255,255,.22);
+    width: 340px;
+    max-height: 82vh;
+    overflow-y: auto;
 
-  backdrop-filter: blur(24px);
-  transition: .45s;
-  z-index: 100;
+    padding: 32px;
+
+    border-radius: 28px;
+
+    background: rgba(10,10,10,.85);
+
+    border: 1px solid rgba(255,255,255,.22);
+
+    backdrop-filter: blur(24px);
+
+    transition: .45s;
+
+    z-index: 100;
 }
 
 .inspector.active {
-  transform:
-    translateY(-50%)
-    translateX(0);
+    transform:
+        translateY(-50%)
+        translateX(0);
 }
 
 .inspector small {
-  color: #888;
-  letter-spacing: 4px;
-  font-size: 11px;
+    color: #888;
+    letter-spacing: 4px;
+    font-size: 11px;
 }
 
 .inspector h2 {
-  margin-top: 14px;
-  font-size: 28px;
+    margin-top: 14px;
+    font-size: 28px;
 }
 
 .insp-status {
-  margin-top: 14px;
-  display: flex;
-  align-items: center;
-  font-size: 13px;
-  color: #ddd;
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    color: #ddd;
 }
 
 .insp-section {
-  margin-top: 22px;
+    margin-top: 22px;
 }
 
 .insp-section .insp-label {
-  font-size: 11px;
-  letter-spacing: 3px;
-  color: #777;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: #777;
 }
 
 .insp-section p {
-  margin-top: 10px;
-  color: #bbb;
-  line-height: 1.55;
-  font-size: 14px;
+    margin-top: 10px;
+    color: #bbb;
+    line-height: 1.55;
+    font-size: 14px;
 }
 
+
+/* TAGS */
+
 .tags {
-  display: flex;
-  gap: 7px;
-  flex-wrap: wrap;
-  margin-top: 10px;
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+    margin-top: 10px;
 }
 
 .tag {
-  padding: 6px 12px;
-  border-radius: 40px;
-  background: rgba(255,255,255,.1);
-  font-size: 11px;
-  color: #ddd;
+    padding: 6px 12px;
+    border-radius: 40px;
+    background: rgba(255,255,255,.1);
+    font-size: 11px;
+    color: #ddd;
 }
 
+
+/* ROADMAP */
+
 .roadmap-list {
-  margin-top: 10px;
-  list-style: none;
+    margin-top: 10px;
+    list-style: none;
 }
 
 .roadmap-list li {
-  font-size: 13px;
-  color: #999;
-  padding: 5px 0;
-  border-top: 1px solid rgba(255,255,255,.07);
+    font-size: 13px;
+    color: #999;
+    padding: 5px 0;
+    border-top: 1px solid rgba(255,255,255,.07);
 }
 
 .roadmap-list li:first-child {
-  border-top: none;
+    border-top: none;
 }
 
+
+/* BUTTON */
+
 button.open-btn {
-  margin-top: 26px;
-  padding: 13px 22px;
-  border-radius: 40px;
-  background: rgba(255,255,255,.1);
-  border: 1px solid rgba(255,255,255,.28);
-  color: #fff;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 13px;
-  letter-spacing: .4px;
-  transition: .25s;
+    margin-top: 26px;
+    padding: 13px 22px;
+
+    border-radius: 40px;
+
+    background: rgba(255,255,255,.1);
+
+    border: 1px solid rgba(255,255,255,.28);
+
+    color: #fff;
+
+    cursor: pointer;
+
+    font-family: inherit;
+    font-size: 13px;
+    letter-spacing: .4px;
+
+    transition: .25s;
 }
 
 button.open-btn:hover {
-  background: rgba(255,255,255,.18);
+    background: rgba(255,255,255,.18);
 }
 
 button.open-btn:disabled {
-  opacity: .35;
-  cursor: default;
+    opacity: .35;
+    cursor: default;
 }
 
 button.open-btn:disabled:hover {
-  background: rgba(255,255,255,.1);
+    background: rgba(255,255,255,.1);
 }
 
 
-/* Legend */
+/* LEGEND */
 
 .legend {
-  position: fixed;
-  left: 30px;
-  bottom: 30px;
-  padding: 18px 22px;
-  border-radius: 16px;
+    position: fixed;
+    left: 30px;
+    bottom: 30px;
 
-  background: rgba(10,10,10,.8);
-  border: 1px solid rgba(255,255,255,.15);
+    padding: 18px 22px;
 
-  backdrop-filter: blur(16px);
+    border-radius: 16px;
 
-  z-index: 50;
-  font-size: 12px;
+    background: rgba(10,10,10,.8);
+
+    border: 1px solid rgba(255,255,255,.15);
+
+    backdrop-filter: blur(16px);
+
+    z-index: 50;
+
+    font-size: 12px;
 }
 
 .legend .leg-title {
-  letter-spacing: 3px;
-  color: #888;
-  font-size: 10px;
-  margin-bottom: 12px;
+    letter-spacing: 3px;
+    color: #888;
+    font-size: 10px;
+    margin-bottom: 12px;
 }
 
 .legend .leg-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 6px 0;
-  color: #ccc;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 6px 0;
+    color: #ccc;
 }
 
 .legend .swatch {
-  width: 12px;
-  height: 12px;
-  border-radius: 3px;
-  border: 1px solid;
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    border: 1px solid;
 }
 
 .legend .swatch.f {
-  border-color: rgba(150,190,255,.6);
-  background: rgba(150,190,255,.2);
+    border-color: rgba(150,190,255,.6);
+    background: rgba(150,190,255,.2);
 }
 
 .legend .swatch.i {
-  border-color: rgba(150,190,255,.6);
-  background: rgba(150,190,255,.2);
+    border-color: rgba(150,190,255,.6);
+    background: rgba(150,190,255,.2);
 }
 
 .legend .swatch.g {
-  border-color: rgba(255,220,160,.6);
-  background: rgba(255,220,160,.2);
+    border-color: rgba(255,220,160,.6);
+    background: rgba(255,220,160,.2);
 }
 
 .legend .swatch.s {
-  border-color: rgba(180,255,200,.6);
-  background: rgba(180,255,200,.2);
+    border-color: rgba(180,255,200,.6);
+    background: rgba(180,255,200,.2);
 }
 
 .legend .swatch.w {
-  border-color: rgba(255,255,255,.6);
-  background: rgba(255,255,255,.15);
+    border-color: rgba(255,255,255,.6);
+    background: rgba(255,255,255,.15);
 }
+
+
+/* FOOTER */
 
 .footer {
-  text-align: center;
-  margin-top: 50px;
-  color: #666;
-  letter-spacing: 5px;
-  font-size: 12px;
-  position: relative;
-  z-index: 5;
+    text-align: center;
+    margin-top: 50px;
+    color: #666;
+    letter-spacing: 5px;
+    font-size: 12px;
+
+    position: relative;
+    z-index: 5;
 }
 
 
-/* Accessibility */
+/* REDUCED MOTION */
 
 @media(prefers-reduced-motion: reduce) {
 
-  * {
-    animation: none !important;
-    transition: none !important;
-  }
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
 
-  .connection,
-  .dep {
-    opacity: 1;
-  }
+    .connection,
+    .dep {
+        opacity: 1;
+    }
 
-  .node {
-    opacity: 1;
-  }
+    .node {
+        opacity: 1;
+    }
 }
 
 
-/* Responsive */
+/* TABLET */
 
 @media(max-width:1100px) {
 
-  .map {
-    height: 2600px;
-  }
+    .map {
+        height: 2600px;
+    }
 
-  .assets,
-  .eventbus,
-  .audio,
-  .weather,
-  .ai,
-  .terrain,
-  .movement,
-  .combat,
-  .quest,
-  .cinematics {
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-  }
+    .assets,
+    .eventbus,
+    .audio,
+    .weather,
+    .ai,
+    .terrain,
+    .movement,
+    .combat,
+    .quest,
+    .cinematics {
 
-  .assets {
-    top: 480px;
-  }
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+    }
 
-  .eventbus {
-    top: 640px;
-  }
+    .assets {
+        top: 480px;
+    }
 
-  .audio {
-    top: 800px;
-  }
+    .eventbus {
+        top: 640px;
+    }
 
-  .movement {
-    top: 980px;
-  }
+    .audio {
+        top: 800px;
+    }
 
-  .combat {
-    top: 1140px;
-  }
+    .movement {
+        top: 980px;
+    }
 
-  .quest {
-    top: 1300px;
-  }
+    .combat {
+        top: 1140px;
+    }
 
-  .cinematics {
-    top: 1460px;
-  }
+    .quest {
+        top: 1300px;
+    }
 
-  .weather {
-    top: 1640px;
-  }
+    .cinematics {
+        top: 1460px;
+    }
 
-  .ai {
-    top: 1800px;
-  }
+    .weather {
+        top: 1640px;
+    }
 
-  .terrain {
-    top: 1960px;
-  }
+    .ai {
+        top: 1800px;
+    }
 
-  .worldstate {
-    top: 2180px;
-  }
+    .terrain {
+        top: 1960px;
+    }
 
-  .world {
-    top: 2420px;
-  }
+    .worldstate {
+        top: 2180px;
+    }
+
+    .world {
+        top: 2420px;
+    }
 }
+
+
+/* MOBILE */
 
 @media(max-width:900px) {
 
-  .inspector {
-    right: 14px;
-    left: 14px;
-    width: auto;
-  }
+    .inspector {
+        right: 14px;
+        left: 14px;
+        width: auto;
+    }
 
-  .legend {
-    display: none;
-  }
+    .legend {
+        display: none;
+    }
 }
