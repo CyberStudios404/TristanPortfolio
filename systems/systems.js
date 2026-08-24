@@ -4,7 +4,7 @@ const systems = {
 
     bootstrap: {
         title: "Bootstrap",
-        framework: "bootstrap-framework",
+        framework: "bootstrap",
         status: "active",
         statusLabel: "ACTIVE",
 
@@ -32,7 +32,7 @@ const systems = {
 
     services: {
         title: "Service Layer",
-        framework: "service-framework",
+        framework: "service",
         status: "development",
         statusLabel: "IN DEVELOPMENT",
 
@@ -69,7 +69,7 @@ const systems = {
 
     assets: {
         title: "Asset Registry",
-        framework: "assetregistry-framework",
+        framework: "asset-registry",
         status: "development",
         statusLabel: "IN DEVELOPMENT",
 
@@ -100,7 +100,7 @@ const systems = {
 
     eventbus: {
         title: "Event Bus",
-        framework: "eventbus-framework",
+        framework: "event-bus",
         status: "development",
         statusLabel: "IN DEVELOPMENT",
 
@@ -136,7 +136,7 @@ const systems = {
 
     audio: {
         title: "Audio Service",
-        framework: "audio-framework",
+        framework: "audio",
         status: "development",
         statusLabel: "IN DEVELOPMENT",
 
@@ -170,7 +170,7 @@ const systems = {
 
     weather: {
         title: "Weather",
-        framework: "weather-framework",
+        framework: "weather",
         status: "active",
         statusLabel: "ACTIVE",
 
@@ -204,7 +204,7 @@ const systems = {
 
     ai: {
         title: "AI Framework",
-        framework: "ai-framework",
+        framework: "behaviour-ai",
         status: "development",
         statusLabel: "IN DEVELOPMENT",
 
@@ -238,7 +238,7 @@ const systems = {
 
     terrain: {
         title: "World Streaming",
-        framework: "streaming-framework",
+        framework: "world-streaming",
         status: "planned",
         statusLabel: "PLANNED",
 
@@ -270,7 +270,7 @@ const systems = {
 
     movement: {
         title: "Movement",
-        framework: "locomotion-framework",
+        framework: "locomotion",
         status: "development",
         statusLabel: "IN DEVELOPMENT",
 
@@ -303,7 +303,7 @@ const systems = {
 
     combat: {
         title: "Combat",
-        framework: "combat-framework",
+        framework: "combat",
         status: "planned",
         statusLabel: "PLANNED",
 
@@ -338,7 +338,7 @@ const systems = {
 
     quest: {
         title: "Quest Framework",
-        framework: "quest-framework",
+        framework: "quest",
         status: "active",
         statusLabel: "ACTIVE",
 
@@ -371,7 +371,7 @@ const systems = {
 
     cinematics: {
         title: "Cinematics",
-        framework: "cinematic-framework",
+        framework: "cinematic",
         status: "development",
         statusLabel: "IN DEVELOPMENT",
 
@@ -405,7 +405,7 @@ const systems = {
 
     worldstate: {
         title: "World State",
-        framework: "worldstate-framework",
+        framework: "world-state",
         status: "planned",
         statusLabel: "PLANNED",
 
@@ -443,8 +443,8 @@ const systems = {
         title: "Ashes World",
 
         /*
-         * This is NOT a framework page.
-         * Therefore there is no framework URL.
+         * This is not a framework page
+         * Therefore there is no framework URL
          */
         framework: null,
 
