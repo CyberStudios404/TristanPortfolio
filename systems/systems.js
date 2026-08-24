@@ -1,4 +1,5 @@
-const portfolioBase = "/TristanPortfolio/frameworks/";
+const portfolioBase =
+    `${window.location.origin}/TristanPortfolio/frameworks/`;
 const systems = {
 
     bootstrap: {
@@ -1067,42 +1068,47 @@ function renderInspector(id) {
 
     /* FRAMEWORK BUTTON */
 
-    const btn =
-        document.getElementById(
-            "open-btn"
-        );
+/* =========================================================
+   FRAMEWORK BUTTON
+========================================================= */
 
-    const frameworkURL =
-        d.framework
-            ? portfolioBase + d.framework
-            : null;
+const btn =
+    document.getElementById(
+        "open-btn"
+    );
+
+const frameworkURL =
+    d.framework
+        ? `${portfolioBase}${d.framework}`
+        : null;
 
 
-    if (frameworkURL) {
+if (frameworkURL) {
 
-        btn.disabled =
-            false;
+    btn.disabled =
+        false;
 
-        btn.textContent =
-            "OPEN FRAMEWORK →";
+    btn.textContent =
+        "OPEN FRAMEWORK →";
 
-        btn.onclick =
-            () => window.open(
-                frameworkURL
-            );
+    btn.onclick =
+        () => {
+            window.location.href =
+                frameworkURL;
+        };
 
-    } else {
+} else {
 
-        btn.disabled =
-            true;
+    btn.disabled =
+        true;
 
-        btn.textContent =
-            "PAGE COMING SOON";
+    btn.textContent =
+        "PAGE COMING SOON";
 
-        btn.onclick =
-            null;
+    btn.onclick =
+        null;
 
-    }
+}
 
 
     inspector.classList.add(
