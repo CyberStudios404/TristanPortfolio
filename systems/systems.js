@@ -441,7 +441,13 @@ const systems = {
 
     world: {
         title: "Ashes World",
-        framework: "ashes-world",
+
+        /*
+         * This is NOT a framework page.
+         * Therefore there is no framework URL.
+         */
+        framework: null,
+
         status: "development",
         statusLabel: "IN DEVELOPMENT",
 
