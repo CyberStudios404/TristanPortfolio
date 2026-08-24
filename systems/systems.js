@@ -1,10 +1,4 @@
-const portfolioBase = "./frameworks/";
-
-
-/* =========================================================
-   SYSTEM DATA
-========================================================= */
-
+const portfolioBase = "/TristanPortfolio/frameworks/";
 const systems = {
 
     bootstrap: {
