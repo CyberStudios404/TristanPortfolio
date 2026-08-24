@@ -6,338 +6,331 @@
 
 <title>Ashes Architecture | Tristan Bernier</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/architecture.css">
 </head>
 
 <body>
 
 <div class="page">
 
-  <div class="ambient"></div>
+    <div class="ambient"></div>
 
-  <section class="header">
-    <div class="label">ASHES OF THE FALLEN</div>
+    <section class="header">
+        <div class="label">ASHES OF THE FALLEN</div>
 
-    <h1>
-      ENGINEERING<br>
-      LIVING WORLDS
-    </h1>
+        <h1>
+            ENGINEERING<br>
+            LIVING WORLDS
+        </h1>
 
-    <p class="subtitle">
-      Visual architecture map of the systems powering Ashes of the Fallen.
-      Hover to preview, click to pin.
-    </p>
-  </section>
+        <p class="subtitle">
+            Visual architecture map of the systems powering Ashes of the Fallen.
+            Hover to preview, click to pin.
+        </p>
+    </section>
 
-  <div class="map-wrap">
+    <div class="map-wrap">
 
-    <div class="map" id="map">
+        <div class="map" id="map">
 
-      <svg id="svg"></svg>
+            <svg id="svg"></svg>
 
-      <!-- FOUNDATION -->
+            <!-- BOOTSTRAP -->
 
-      <div class="node infrastructure bootstrap"
-           data-system="bootstrap"
-           tabindex="0"
-           role="button">
+            <div
+                class="node infrastructure bootstrap"
+                data-system="bootstrap"
+                tabindex="0"
+                role="button"
+            >
+                <span class="eyebrow">FOUNDATION</span>
+                <h2>BOOTSTRAP</h2>
 
-        <span class="eyebrow">FOUNDATION</span>
+                <div class="status">
+                    <span class="dot dot-active"></span>
+                    ACTIVE
+                </div>
 
-        <h2>BOOTSTRAP</h2>
+                <div class="details">
+                    Initializes the game architecture.
+                </div>
+            </div>
 
-        <div class="status">
-          <span class="dot dot-active"></span>
-          ACTIVE
+            <!-- SERVICE LAYER -->
+
+            <div
+                class="node infrastructure services"
+                data-system="services"
+                tabindex="0"
+                role="button"
+            >
+                <span class="eyebrow">INFRASTRUCTURE</span>
+                <h2>SERVICE LAYER</h2>
+
+                <div class="status">
+                    <span class="dot dot-development"></span>
+                    IN DEVELOPMENT
+                </div>
+
+                <div class="details">
+                    Shared access between systems.
+                </div>
+            </div>
+
+            <!-- ASSET REGISTRY -->
+
+            <div
+                class="node infrastructure assets"
+                data-system="assets"
+                tabindex="0"
+                role="button"
+            >
+                <span class="eyebrow">INFRASTRUCTURE</span>
+                <h2>ASSET REGISTRY</h2>
+
+                <div class="status">
+                    <span class="dot dot-development"></span>
+                    IN DEVELOPMENT
+                </div>
+
+                <div class="details">
+                    Central asset lookup & loading.
+                </div>
+            </div>
+
+            <!-- EVENT BUS -->
+
+            <div
+                class="node infrastructure eventbus"
+                data-system="eventbus"
+                tabindex="0"
+                role="button"
+            >
+                <span class="eyebrow">INFRASTRUCTURE</span>
+                <h2>EVENT BUS</h2>
+
+                <div class="status">
+                    <span class="dot dot-development"></span>
+                    IN DEVELOPMENT
+                </div>
+
+                <div class="details">
+                    Decoupled system messaging.
+                </div>
+            </div>
+
+            <!-- AUDIO -->
+
+            <div
+                class="node infrastructure audio"
+                data-system="audio"
+                tabindex="0"
+                role="button"
+            >
+                <span class="eyebrow">INFRASTRUCTURE</span>
+                <h2>AUDIO SERVICE</h2>
+
+                <div class="status">
+                    <span class="dot dot-development"></span>
+                    IN DEVELOPMENT
+                </div>
+
+                <div class="details">
+                    All audio events & mixing.
+                </div>
+            </div>
+
+            <!-- MOVEMENT -->
+
+            <div
+                class="node gameplay movement"
+                data-system="movement"
+                tabindex="0"
+                role="button"
+            >
+                <span class="eyebrow">GAMEPLAY</span>
+                <h2>MOVEMENT</h2>
+
+                <div class="status">
+                    <span class="dot dot-development"></span>
+                    IN DEVELOPMENT
+                </div>
+
+                <div class="details">
+                    Locomotion, collision, input.
+                </div>
+            </div>
+
+            <!-- COMBAT -->
+
+            <div
+                class="node gameplay combat"
+                data-system="combat"
+                tabindex="0"
+                role="button"
+            >
+                <span class="eyebrow">GAMEPLAY</span>
+                <h2>COMBAT</h2>
+
+                <div class="status">
+                    <span class="dot dot-planned"></span>
+                    PLANNED
+                </div>
+
+                <div class="details">
+                    Abilities, hit detection, VFX.
+                </div>
+            </div>
+
+            <!-- QUEST -->
+
+            <div
+                class="node gameplay quest"
+                data-system="quest"
+                tabindex="0"
+                role="button"
+            >
+                <span class="eyebrow">GAMEPLAY</span>
+                <h2>QUEST FRAMEWORK</h2>
+
+                <div class="status">
+                    <span class="dot dot-active"></span>
+                    ACTIVE
+                </div>
+
+                <div class="details">
+                    Objectives, journal, dialogue.
+                </div>
+            </div>
+
+            <!-- CINEMATICS -->
+
+            <div
+                class="node gameplay cinematics"
+                data-system="cinematics"
+                tabindex="0"
+                role="button"
+            >
+                <span class="eyebrow">GAMEPLAY</span>
+                <h2>CINEMATICS</h2>
+
+                <div class="status">
+                    <span class="dot dot-development"></span>
+                    IN DEVELOPMENT
+                </div>
+
+                <div class="details">
+                    Timeline, camera, sequences.
+                </div>
+            </div>
+
+            <!-- WEATHER -->
+
+            <div
+                class="node simulation weather"
+                data-system="weather"
+                tabindex="0"
+                role="button"
+            >
+                <span class="eyebrow">SIMULATION</span>
+                <h2>WEATHER</h2>
+
+                <div class="status">
+                    <span class="dot dot-active"></span>
+                    ACTIVE
+                </div>
+
+                <div class="details">
+                    HDRP weather simulation.
+                </div>
+            </div>
+
+            <!-- AI -->
+
+            <div
+                class="node simulation ai"
+                data-system="ai"
+                tabindex="0"
+                role="button"
+            >
+                <span class="eyebrow">SIMULATION</span>
+                <h2>AI FRAMEWORK</h2>
+
+                <div class="status">
+                    <span class="dot dot-development"></span>
+                    IN DEVELOPMENT
+                </div>
+
+                <div class="details">
+                    World-state driven AI.
+                </div>
+            </div>
+
+            <!-- WORLD STREAMING -->
+
+            <div
+                class="node simulation terrain"
+                data-system="terrain"
+                tabindex="0"
+                role="button"
+            >
+                <span class="eyebrow">SIMULATION</span>
+                <h2>WORLD STREAMING</h2>
+
+                <div class="status">
+                    <span class="dot dot-planned"></span>
+                    PLANNED
+                </div>
+
+                <div class="details">
+                    Handcrafted streaming & LOD.
+                </div>
+            </div>
+
+            <!-- WORLD STATE -->
+
+            <div
+                class="node simulation worldstate"
+                data-system="worldstate"
+                tabindex="0"
+                role="button"
+            >
+                <span class="eyebrow">SIMULATION</span>
+                <h2>WORLD STATE</h2>
+
+                <div class="status">
+                    <span class="dot dot-planned"></span>
+                    PLANNED
+                </div>
+            </div>
+
+            <!-- ASHES WORLD -->
+
+            <div
+                class="node final world"
+                data-system="world"
+                tabindex="0"
+                role="button"
+            >
+                <span class="eyebrow">WORLD</span>
+                <h2>ASHES WORLD</h2>
+
+                <div class="status">
+                    <span class="dot dot-development"></span>
+                    IN DEVELOPMENT
+                </div>
+            </div>
+
         </div>
-
-        <div class="details">
-          Initializes the game architecture.
-        </div>
-
-      </div>
-
-
-      <!-- INFRASTRUCTURE -->
-
-      <div class="node infrastructure services"
-           data-system="services"
-           tabindex="0"
-           role="button">
-
-        <span class="eyebrow">INFRASTRUCTURE</span>
-
-        <h2>SERVICE LAYER</h2>
-
-        <div class="status">
-          <span class="dot dot-development"></span>
-          IN DEVELOPMENT
-        </div>
-
-        <div class="details">
-          Shared access between systems.
-        </div>
-
-      </div>
-
-
-      <div class="node infrastructure assets"
-           data-system="assets"
-           tabindex="0"
-           role="button">
-
-        <span class="eyebrow">INFRASTRUCTURE</span>
-
-        <h2>ASSET REGISTRY</h2>
-
-        <div class="status">
-          <span class="dot dot-development"></span>
-          IN DEVELOPMENT
-        </div>
-
-        <div class="details">
-          Central asset lookup & loading.
-        </div>
-
-      </div>
-
-
-      <div class="node infrastructure eventbus"
-           data-system="eventbus"
-           tabindex="0"
-           role="button">
-
-        <span class="eyebrow">INFRASTRUCTURE</span>
-
-        <h2>EVENT BUS</h2>
-
-        <div class="status">
-          <span class="dot dot-development"></span>
-          IN DEVELOPMENT
-        </div>
-
-        <div class="details">
-          Decoupled system messaging.
-        </div>
-
-      </div>
-
-
-      <div class="node infrastructure audio"
-           data-system="audio"
-           tabindex="0"
-           role="button">
-
-        <span class="eyebrow">INFRASTRUCTURE</span>
-
-        <h2>AUDIO SERVICE</h2>
-
-        <div class="status">
-          <span class="dot dot-development"></span>
-          IN DEVELOPMENT
-        </div>
-
-        <div class="details">
-          All audio events & mixing.
-        </div>
-
-      </div>
-
-
-      <!-- GAMEPLAY -->
-
-      <div class="node gameplay movement"
-           data-system="movement"
-           tabindex="0"
-           role="button">
-
-        <span class="eyebrow">GAMEPLAY</span>
-
-        <h2>MOVEMENT</h2>
-
-        <div class="status">
-          <span class="dot dot-development"></span>
-          IN DEVELOPMENT
-        </div>
-
-        <div class="details">
-          Locomotion, collision, input.
-        </div>
-
-      </div>
-
-
-      <div class="node gameplay combat"
-           data-system="combat"
-           tabindex="0"
-           role="button">
-
-        <span class="eyebrow">GAMEPLAY</span>
-
-        <h2>COMBAT</h2>
-
-        <div class="status">
-          <span class="dot dot-planned"></span>
-          PLANNED
-        </div>
-
-        <div class="details">
-          Abilities, hit detection, VFX.
-        </div>
-
-      </div>
-
-
-      <div class="node gameplay quest"
-           data-system="quest"
-           tabindex="0"
-           role="button">
-
-        <span class="eyebrow">GAMEPLAY</span>
-
-        <h2>QUEST FRAMEWORK</h2>
-
-        <div class="status">
-          <span class="dot dot-active"></span>
-          ACTIVE
-        </div>
-
-        <div class="details">
-          Objectives, journal, dialogue.
-        </div>
-
-      </div>
-
-
-      <div class="node gameplay cinematics"
-           data-system="cinematics"
-           tabindex="0"
-           role="button">
-
-        <span class="eyebrow">GAMEPLAY</span>
-
-        <h2>CINEMATICS</h2>
-
-        <div class="status">
-          <span class="dot dot-development"></span>
-          IN DEVELOPMENT
-        </div>
-
-        <div class="details">
-          Timeline, camera, sequences.
-        </div>
-
-      </div>
-
-
-      <!-- SIMULATION -->
-
-      <div class="node simulation weather"
-           data-system="weather"
-           tabindex="0"
-           role="button">
-
-        <span class="eyebrow">SIMULATION</span>
-
-        <h2>WEATHER</h2>
-
-        <div class="status">
-          <span class="dot dot-active"></span>
-          ACTIVE
-        </div>
-
-        <div class="details">
-          HDRP weather simulation.
-        </div>
-
-      </div>
-
-
-      <div class="node simulation ai"
-           data-system="ai"
-           tabindex="0"
-           role="button">
-
-        <span class="eyebrow">SIMULATION</span>
-
-        <h2>AI FRAMEWORK</h2>
-
-        <div class="status">
-          <span class="dot dot-development"></span>
-          IN DEVELOPMENT
-        </div>
-
-        <div class="details">
-          World-state driven AI.
-        </div>
-
-      </div>
-
-
-      <div class="node simulation terrain"
-           data-system="terrain"
-           tabindex="0"
-           role="button">
-
-        <span class="eyebrow">SIMULATION</span>
-
-        <h2>WORLD STREAMING</h2>
-
-        <div class="status">
-          <span class="dot dot-planned"></span>
-          PLANNED
-        </div>
-
-        <div class="details">
-          Handcrafted streaming & LOD.
-        </div>
-
-      </div>
-
-
-      <div class="node simulation worldstate"
-           data-system="worldstate"
-           tabindex="0"
-           role="button">
-
-        <span class="eyebrow">SIMULATION</span>
-
-        <h2>WORLD STATE</h2>
-
-        <div class="status">
-          <span class="dot dot-planned"></span>
-          PLANNED
-        </div>
-
-      </div>
-
-
-      <!-- WORLD -->
-
-      <div class="node final world"
-           data-system="world"
-           tabindex="0"
-           role="button">
-
-        <span class="eyebrow">WORLD</span>
-
-        <h2>ASHES WORLD</h2>
-
-        <div class="status">
-          <span class="dot dot-development"></span>
-          IN DEVELOPMENT
-        </div>
-
-      </div>
-
     </div>
-  </div>
 
-  <div class="footer">
-    TRISTAN BERNIER • UNITY SYSTEMS DESIGN
-  </div>
+    <div class="footer">
+        TRISTAN BERNIER • UNITY SYSTEMS DESIGN
+    </div>
 
 </div>
 
@@ -346,34 +339,34 @@
 
 <div class="legend">
 
-  <div class="leg-title">
-    ARCHITECTURE LAYERS
-  </div>
+    <div class="leg-title">
+        ARCHITECTURE LAYERS
+    </div>
 
-  <div class="leg-item">
-    <span class="swatch f"></span>
-    Foundation
-  </div>
+    <div class="leg-item">
+        <span class="swatch f"></span>
+        Foundation
+    </div>
 
-  <div class="leg-item">
-    <span class="swatch i"></span>
-    Infrastructure
-  </div>
+    <div class="leg-item">
+        <span class="swatch i"></span>
+        Infrastructure
+    </div>
 
-  <div class="leg-item">
-    <span class="swatch g"></span>
-    Gameplay
-  </div>
+    <div class="leg-item">
+        <span class="swatch g"></span>
+        Gameplay
+    </div>
 
-  <div class="leg-item">
-    <span class="swatch s"></span>
-    Simulation
-  </div>
+    <div class="leg-item">
+        <span class="swatch s"></span>
+        Simulation
+    </div>
 
-  <div class="leg-item">
-    <span class="swatch w"></span>
-    World
-  </div>
+    <div class="leg-item">
+        <span class="swatch w"></span>
+        World
+    </div>
 
 </div>
 
@@ -382,79 +375,80 @@
 
 <div class="inspector" id="inspector">
 
-  <small>SYSTEM MODULE</small>
+    <small>SYSTEM MODULE</small>
 
-  <h2 id="title">
-    Select a system
-  </h2>
+    <h2 id="title">
+        Select a system
+    </h2>
 
-  <div class="insp-status" id="insp-status"></div>
+    <div class="insp-status" id="insp-status"></div>
 
-  <div class="insp-section">
 
-    <div class="insp-label">
-      ROLE
+    <div class="insp-section">
+
+        <div class="insp-label">
+            ROLE
+        </div>
+
+        <p id="description">
+            Hover or click a node.
+        </p>
+
     </div>
 
-    <p id="description">
-      Hover or click a node.
-    </p>
 
-  </div>
+    <div class="insp-section" id="deps-section">
 
+        <div class="insp-label">
+            DEPENDS ON
+        </div>
 
-  <div class="insp-section" id="deps-section">
+        <div class="tags" id="deps"></div>
 
-    <div class="insp-label">
-      DEPENDS ON
     </div>
 
-    <div class="tags" id="deps"></div>
 
-  </div>
+    <div class="insp-section" id="usedby-section">
 
+        <div class="insp-label">
+            USED BY
+        </div>
 
-  <div class="insp-section" id="usedby-section">
+        <div class="tags" id="usedby"></div>
 
-    <div class="insp-label">
-      USED BY
     </div>
 
-    <div class="tags" id="usedby"></div>
 
-  </div>
+    <div class="insp-section">
 
+        <div class="insp-label">
+            TECHNOLOGIES
+        </div>
 
-  <div class="insp-section">
+        <div class="tags" id="tags"></div>
 
-    <div class="insp-label">
-      TECHNOLOGIES
     </div>
 
-    <div class="tags" id="tags"></div>
 
-  </div>
+    <div class="insp-section">
 
+        <div class="insp-label">
+            ROADMAP
+        </div>
 
-  <div class="insp-section">
+        <ul class="roadmap-list" id="roadmap"></ul>
 
-    <div class="insp-label">
-      ROADMAP
     </div>
 
-    <ul class="roadmap-list" id="roadmap"></ul>
 
-  </div>
-
-
-  <button class="open-btn" id="open-btn" disabled>
-    PAGE COMING SOON
-  </button>
+    <button class="open-btn" id="open-btn" disabled>
+        PAGE COMING SOON
+    </button>
 
 </div>
 
 
-<script src="script.js"></script>
+<script src="js/architecture.js"></script>
 
 </body>
 </html>
